@@ -12,7 +12,7 @@ radius = 132.30646
 script = ExtResource("1_cpk21")
 impact_frame = false
 damage = 200.0
-fly_force = 2000
+fly_force = 1000
 fall_time = 1
 radius = 200
 

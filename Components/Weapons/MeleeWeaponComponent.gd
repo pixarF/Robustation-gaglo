@@ -84,7 +84,6 @@ func _try_melee_attack(direction):
 	
 	return _targets
 
-# Гарантированная атака цели
 func _melee_attack_target(target, direction = null, multiple_attack = false):
 	if slash_effect != null:
 		var _slash_effect = slash_effect.instantiate()
