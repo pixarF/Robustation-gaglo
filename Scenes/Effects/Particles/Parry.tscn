@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://lf1pf5qmfpp4"]
+
+[ext_resource type="Script" uid="uid://bq58uyerhkt2q" path="res://Scripts/Effects/TimedDelete.gd" id="2_hcue4"]
+[ext_resource type="PackedScene" uid="uid://bkvbjh83h5ap3" path="res://Scenes/Effects/Particles/ParrySymbols.tscn" id="2_i4s1l"]
+
+[sub_resource type="Curve" id="Curve_mgjcw"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1.011236), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_c1ng1"]
+curve = SubResource("Curve_mgjcw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mgjcw"]
+lifetime_randomness = 0.3
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -42.530003
+linear_accel_max = 99.99999
+radial_accel_min = -100.0
+radial_accel_max = 99.99999
+scale_min = 0.5
+scale_over_velocity_max = 1000.0
+scale_over_velocity_curve = SubResource("CurveTexture_c1ng1")
+hue_variation_min = -1.0
+hue_variation_max = -0.54
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+self_modulate = Color(3.013768, 3.013768, 3.013768, 1)
+emitting = false
+amount = 40
+preprocess = 0.5
+speed_scale = 4.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_mgjcw")
+script = ExtResource("2_hcue4")
+
+[node name="Delete" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+autostart = true
+
+[node name="GPUParticles2D2" parent="." instance=ExtResource("2_i4s1l")]
+modulate = Color(1.0964829, 1.0964829, 1.0964829, 1)
+
+[connection signal="timeout" from="Delete" to="." method="_on_delete_timeout"]

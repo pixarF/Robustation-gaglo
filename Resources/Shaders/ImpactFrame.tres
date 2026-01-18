@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dufhgddaeqjd4"]
+
+[ext_resource type="Shader" uid="uid://boy7hlksa7i1s" path="res://Resources/Shaders/ImpactFrame.gdshader" id="1_1eqom"]
+
+[resource]
+shader = ExtResource("1_1eqom")
+shader_parameter/threshold = 0.3200000152
+shader_parameter/smoothness = 0.19600000931
+shader_parameter/bg_color = Color(0.59717613, 0.59717613, 0.5971761, 1)
+shader_parameter/fg_color = Color(0, 0, 0, 1)
+shader_parameter/invert = false
+shader_parameter/intensity = 1.0

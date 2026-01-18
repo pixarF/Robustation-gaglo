@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0eulucj1dtco"]
+
+[ext_resource type="PackedScene" uid="uid://c0elisnkry0s6" path="res://Scenes/Mobs/Base/BaseMob.tscn" id="1_8ckee"]
+[ext_resource type="Script" uid="uid://vaff4lwkvrc7" path="res://Components/Mobs/NPC/MoveToPointComponent.gd" id="2_i6wsw"]
+[ext_resource type="Script" uid="uid://bv7whrderww4t" path="res://Components/Mobs/NPC/MoveToPlayerComponent.gd" id="3_vb81k"]
+
+[node name="BaseEnemy" instance=ExtResource("1_8ckee")]
+
+[node name="NavigationAgent" type="NavigationAgent2D" parent="." index="5"]
+avoidance_enabled = true
+radius = 15.0
+neighbor_distance = 128.0
+time_horizon_agents = 0.5
+avoidance_layers = 3
+avoidance_mask = 3
+
+[node name="AI" type="Node" parent="." index="14"]
+
+[node name="MoveToPointComponent" type="Node" parent="AI" index="0" node_paths=PackedStringArray("navigation_agent")]
+script = ExtResource("2_i6wsw")
+navigation_agent = NodePath("../../NavigationAgent")
+point = Vector2(100, 100)
+metadata/_custom_type_script = "uid://vaff4lwkvrc7"
+
+[node name="MoveToPlayerComponent" type="Node" parent="AI" index="1"]
+script = ExtResource("3_vb81k")
+metadata/_custom_type_script = "uid://bv7whrderww4t"

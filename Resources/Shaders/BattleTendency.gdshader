@@ -1,0 +1,114 @@
+shader_type canvas_item;
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+uniform float red_factor : hint_range(0.0, 2.0) = 1.0;
+uniform float green_factor : hint_range(0.0, 2.0) = 1.0;
+uniform float blue_factor : hint_range(0.0, 2.0) = 1.0;
+
+uniform float saturation : hint_range(0.0, 2.0) = 1.0;
+uniform float brightness : hint_range(-1.0, 1.0) = 0.0;
+uniform float contrast : hint_range(0.0, 2.0) = 1.0;
+uniform float hue_shift : hint_range(-1.0, 1.0) = 0.0;
+uniform float gamma : hint_range(0.1, 3.0) = 1.0;
+
+uniform float alpha : hint_range(0.0, 1.0) = 1.0;
+uniform float vignette_strength : hint_range(0.0, 1.0) = 0.0;
+
+vec3 rgb2hsl(vec3 color) {
+    float max_color = max(max(color.r, color.g), color.b);
+    float min_color = min(min(color.r, color.g), color.b);
+    float delta = max_color - min_color;
+
+    float lightness = (max_color + min_color) / 2.0;
+    float hue = 0.0;
+    float sat = 0.0;
+
+    if (delta != 0.0) {
+        sat = (lightness < 0.5) ? (delta / (max_color + min_color)) : (delta / (2.0 - max_color - min_color));
+        
+        if (max_color == color.r) {
+            hue = (color.g - color.b) / delta + (color.g < color.b ? 6.0 : 0.0);
+        } else if (max_color == color.g) {
+            hue = (color.b - color.r) / delta + 2.0;
+        } else {
+            hue = (color.r - color.g) / delta + 4.0;
+        }
+
+        hue /= 6.0;
+    }
+
+    return vec3(hue, sat, lightness);
+}
+
+vec3 hsl2rgb(vec3 hsl) {
+    float hue = hsl.x;
+    float sat = hsl.y;
+    float lightness = hsl.z;
+
+    float chroma = (1.0 - abs(2.0 * lightness - 1.0)) * sat;
+    float h = hue * 6.0;
+    float x = chroma * (1.0 - abs(mod(h, 2.0) - 1.0));
+
+    vec3 result;
+
+    if (h < 1.0) {
+        result = vec3(chroma, x, 0.0);
+    } else if (h < 2.0) {
+        result = vec3(x, chroma, 0.0);
+    } else if (h < 3.0) {
+        result = vec3(0.0, chroma, x);
+    } else if (h < 4.0) {
+        result = vec3(0.0, x, chroma);
+    } else if (h < 5.0) {
+        result = vec3(x, 0.0, chroma);
+    } else {
+        result = vec3(chroma, 0.0, x);
+    }
+
+    float m = lightness - chroma / 2.0;
+    return result + vec3(m, m, m);
+}
+
+void fragment() {
+    // Get screen texture color (post-processing)
+    vec4 tex_color = texture(SCREEN_TEXTURE, SCREEN_UV);
+    
+    // Apply RGB adjustments
+    vec3 color = tex_color.rgb;
+    color.r *= red_factor;
+    color.g *= green_factor;
+    color.b *= blue_factor;
+
+    // Convert to HSL for hue and saturation adjustments
+    vec3 hsl = rgb2hsl(color);
+    
+    // Hue shift
+    hsl.x = mod(hsl.x + hue_shift, 1.0);
+    
+    // Saturation adjustment
+    hsl.y *= saturation;
+    
+    // Clamp saturation
+    hsl.y = clamp(hsl.y, 0.0, 1.0);
+
+    // Convert back to RGB
+    color = hsl2rgb(hsl);
+
+    // Apply contrast and brightness
+    color = color * contrast + vec3(brightness);
+    
+    // Apply gamma correction
+    color = pow(color, vec3(gamma));
+    
+    // Apply vignette effect
+    if (vignette_strength > 0.0) {
+        vec2 uv = SCREEN_UV * 2.0 - 1.0;
+        float vignette = 1.0 - dot(uv, uv) * vignette_strength;
+        vignette = clamp(vignette, 0.0, 1.0);
+        color *= vignette;
+    }
+    
+    color = clamp(color, 0.0, 1.0);
+    COLOR = vec4(color, tex_color.a * alpha);
+}

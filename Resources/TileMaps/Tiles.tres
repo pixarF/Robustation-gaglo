@@ -1,0 +1,44 @@
+[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://bc7bghcv8144y"]
+
+[ext_resource type="Texture2D" uid="uid://cvur3giqeqos0" path="res://Textures/Tiles/plates.png" id="1_vbrpp"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_vbrpp"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_es1ej"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_nomb1"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_u7mw5"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_es1ej"]
+texture = ExtResource("1_vbrpp")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_vbrpp")
+1:0/0 = 0
+1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_es1ej")
+2:0/0 = 0
+2:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_nomb1")
+3:0/0 = 0
+3:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_u7mw5")
+
+[resource]
+tile_size = Vector2i(32, 32)
+navigation_layer_0/layers = 7
+sources/1 = SubResource("TileSetAtlasSource_es1ej")

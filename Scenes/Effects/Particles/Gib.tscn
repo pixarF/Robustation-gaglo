@@ -1,0 +1,391 @@
+[gd_scene load_steps=23 format=3 uid="uid://g2ac83tmeyxn"]
+
+[ext_resource type="Texture2D" uid="uid://bbk76vne52rnv" path="res://Textures/Effects/Particles/blood_big.png" id="1_kgwu6"]
+[ext_resource type="Script" uid="uid://ckngjbi4531ra" path="res://Scripts/Effects/BloodSystem.gd" id="2_7m5ur"]
+[ext_resource type="Texture2D" uid="uid://dqxd8gltygvr4" path="res://Textures/Effects/Organs/brain.png" id="3_s0kwc"]
+[ext_resource type="Texture2D" uid="uid://svtalply7ojr" path="res://Textures/Effects/Organs/eyeball-r.png" id="3_si16w"]
+[ext_resource type="Script" uid="uid://d2eyb2xe1mh3p" path="res://Components/Entity/OrganComponent.gd" id="4_kg6vs"]
+[ext_resource type="PackedScene" uid="uid://fhhycrapltrq" path="res://Scenes/Effects/Particles/Blood.tscn" id="4_xdl0o"]
+[ext_resource type="Texture2D" uid="uid://cn1pofq6kh1fi" path="res://Textures/Effects/Organs/heart-off.png" id="5_c12ba"]
+[ext_resource type="Texture2D" uid="uid://2awy3no83ypo" path="res://Textures/Effects/Organs/stomach.png" id="6_2ypa8"]
+[ext_resource type="Script" uid="uid://df356su15y7ow" path="res://Components/Entity/HealthComponent.gd" id="6_s8gfb"]
+[ext_resource type="Texture2D" uid="uid://dxkfrcv543eim" path="res://Textures/Effects/Organs/ears.png" id="7_uu161"]
+[ext_resource type="Texture2D" uid="uid://e0hwtjesuk50" path="res://Textures/Effects/Organs/liver.png" id="8_xdl0o"]
+[ext_resource type="Script" uid="uid://b4ckmc2py8cmg" path="res://Components/Entity/MeleeAttackIgnoreComponent.gd" id="9_67tnm"]
+[ext_resource type="Texture2D" uid="uid://ybqrx04pn6uh" path="res://Textures/Effects/Organs/kidney-l.png" id="9_kg6vs"]
+[ext_resource type="AudioStream" uid="uid://di1m6qfvfmk8i" path="res://Resources/Audio/GibRandom.tres" id="11_2ypa8"]
+[ext_resource type="PackedScene" uid="uid://40fiorxrk4xk" path="res://Scenes/Effects/Particles/BloodSpurts.tscn" id="12_uu161"]
+[ext_resource type="PackedScene" uid="uid://deq4t84d81wnb" path="res://Scenes/Effects/Particles/Dodge.tscn" id="14_eb50u"]
+[ext_resource type="Texture2D" uid="uid://bx3kpq3irdo3m" path="res://Textures/Effects/Particles/gib.png" id="15_s8gfb"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_70dfb"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+color = Color(0.5568628, 0, 0.18431373, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uu161"]
+
+[sub_resource type="Curve" id="Curve_eb50u"]
+_limits = [0.0, 1.6853933, 0.0, 1.0]
+_data = [Vector2(0, 1.6853933), 0.0, 0.0, 0, 0, Vector2(0.77205884, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_s8gfb"]
+curve = SubResource("Curve_eb50u")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_67tnm"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 111.49
+initial_velocity_max = 211.48999
+gravity = Vector3(0, 0, 0)
+scale_over_velocity_max = 230.76999
+scale_over_velocity_curve = SubResource("CurveTexture_s8gfb")
+color = Color(0.5568628, 0, 0.18431373, 1)
+
+[node name="Blood" type="GPUParticles2D"]
+z_index = -1
+texture_filter = 1
+amount = 16
+texture = ExtResource("1_kgwu6")
+lifetime = 0.2
+explosiveness = 1.0
+use_fixed_seed = true
+seed = 4246352849
+visibility_rect = Rect2(-1000, -1000, 2000, 2000)
+process_material = SubResource("ParticleProcessMaterial_70dfb")
+script = ExtResource("2_7m5ur")
+
+[node name="PauseTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+autostart = true
+
+[node name="Eye" type="CharacterBody2D" parent="."]
+z_index = 1
+collision_layer = 16
+collision_mask = 0
+motion_mode = 1
+
+[node name="Texture" type="Sprite2D" parent="Eye"]
+position = Vector2(-3, -3)
+texture = ExtResource("3_si16w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Eye"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="OrganComponent" type="Node" parent="Eye" node_paths=PackedStringArray("area2d", "step_sound")]
+script = ExtResource("4_kg6vs")
+area2d = NodePath("../Area2D")
+step_sound = NodePath("StepSound")
+blood_scene = ExtResource("12_uu161")
+min_acceleration_time = 0.6
+max_acceleration_time = 0.8
+metadata/_custom_type_script = "uid://d2eyb2xe1mh3p"
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="Eye/OrganComponent"]
+stream = ExtResource("11_2ypa8")
+volume_db = -20.0
+playback_type = 1
+
+[node name="Area2D" type="Area2D" parent="Eye"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Eye/Area2D"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="HealthComponent" type="Node" parent="Eye"]
+script = ExtResource("6_s8gfb")
+max_health = 5
+health = 5
+gib_effect_scene = ExtResource("4_xdl0o")
+metadata/_custom_type_script = "uid://df356su15y7ow"
+
+[node name="MeleeAttackIgnoreComponent" type="Node" parent="Eye"]
+script = ExtResource("9_67tnm")
+metadata/_custom_type_script = "uid://b4ckmc2py8cmg"
+
+[node name="Brain" type="CharacterBody2D" parent="."]
+z_index = 1
+collision_layer = 16
+collision_mask = 0
+motion_mode = 1
+
+[node name="Texture" type="Sprite2D" parent="Brain"]
+position = Vector2(-3, -3)
+texture = ExtResource("3_s0kwc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Brain"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="OrganComponent" type="Node" parent="Brain" node_paths=PackedStringArray("area2d", "step_sound")]
+script = ExtResource("4_kg6vs")
+area2d = NodePath("../Area2D")
+step_sound = NodePath("StepSound")
+blood_scene = ExtResource("12_uu161")
+min_acceleration_time = 0.6
+max_acceleration_time = 0.8
+metadata/_custom_type_script = "uid://d2eyb2xe1mh3p"
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="Brain/OrganComponent"]
+stream = ExtResource("11_2ypa8")
+volume_db = -20.0
+playback_type = 1
+
+[node name="Area2D" type="Area2D" parent="Brain"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Brain/Area2D"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="HealthComponent" type="Node" parent="Brain"]
+script = ExtResource("6_s8gfb")
+max_health = 5
+health = 5
+gib_effect_scene = ExtResource("4_xdl0o")
+metadata/_custom_type_script = "uid://df356su15y7ow"
+
+[node name="MeleeAttackIgnoreComponent" type="Node" parent="Brain"]
+script = ExtResource("9_67tnm")
+metadata/_custom_type_script = "uid://b4ckmc2py8cmg"
+
+[node name="Heart" type="CharacterBody2D" parent="."]
+z_index = 1
+collision_layer = 16
+collision_mask = 0
+motion_mode = 1
+
+[node name="Texture" type="Sprite2D" parent="Heart"]
+position = Vector2(1, 1)
+texture = ExtResource("5_c12ba")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Heart"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="OrganComponent" type="Node" parent="Heart" node_paths=PackedStringArray("area2d", "step_sound")]
+script = ExtResource("4_kg6vs")
+area2d = NodePath("../Area2D")
+step_sound = NodePath("StepSound")
+blood_scene = ExtResource("12_uu161")
+min_acceleration_time = 0.6
+max_acceleration_time = 0.8
+metadata/_custom_type_script = "uid://d2eyb2xe1mh3p"
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="Heart/OrganComponent"]
+stream = ExtResource("11_2ypa8")
+volume_db = -20.0
+playback_type = 1
+
+[node name="Area2D" type="Area2D" parent="Heart"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Heart/Area2D"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="HealthComponent" type="Node" parent="Heart"]
+script = ExtResource("6_s8gfb")
+max_health = 5
+health = 5
+gib_effect_scene = ExtResource("4_xdl0o")
+metadata/_custom_type_script = "uid://df356su15y7ow"
+
+[node name="MeleeAttackIgnoreComponent" type="Node" parent="Heart"]
+script = ExtResource("9_67tnm")
+metadata/_custom_type_script = "uid://b4ckmc2py8cmg"
+
+[node name="Stomach" type="CharacterBody2D" parent="."]
+z_index = 1
+collision_layer = 16
+collision_mask = 0
+motion_mode = 1
+
+[node name="Texture" type="Sprite2D" parent="Stomach"]
+position = Vector2(1, 1)
+texture = ExtResource("6_2ypa8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stomach"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="OrganComponent" type="Node" parent="Stomach" node_paths=PackedStringArray("area2d", "step_sound")]
+script = ExtResource("4_kg6vs")
+area2d = NodePath("../Area2D")
+step_sound = NodePath("StepSound")
+blood_scene = ExtResource("12_uu161")
+min_acceleration_time = 0.6
+max_acceleration_time = 0.8
+metadata/_custom_type_script = "uid://d2eyb2xe1mh3p"
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="Stomach/OrganComponent"]
+stream = ExtResource("11_2ypa8")
+volume_db = -20.0
+playback_type = 1
+
+[node name="Area2D" type="Area2D" parent="Stomach"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stomach/Area2D"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="HealthComponent" type="Node" parent="Stomach"]
+script = ExtResource("6_s8gfb")
+max_health = 5
+health = 5
+gib_effect_scene = ExtResource("4_xdl0o")
+metadata/_custom_type_script = "uid://df356su15y7ow"
+
+[node name="MeleeAttackIgnoreComponent" type="Node" parent="Stomach"]
+script = ExtResource("9_67tnm")
+metadata/_custom_type_script = "uid://b4ckmc2py8cmg"
+
+[node name="Ears" type="CharacterBody2D" parent="."]
+z_index = 1
+collision_layer = 16
+collision_mask = 0
+motion_mode = 1
+
+[node name="Texture" type="Sprite2D" parent="Ears"]
+position = Vector2(1, 1)
+texture = ExtResource("7_uu161")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ears"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="OrganComponent" type="Node" parent="Ears" node_paths=PackedStringArray("area2d", "step_sound")]
+script = ExtResource("4_kg6vs")
+area2d = NodePath("../Area2D")
+step_sound = NodePath("StepSound")
+blood_scene = ExtResource("12_uu161")
+min_acceleration_time = 0.6
+max_acceleration_time = 0.8
+metadata/_custom_type_script = "uid://d2eyb2xe1mh3p"
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="Ears/OrganComponent"]
+stream = ExtResource("11_2ypa8")
+volume_db = -20.0
+playback_type = 1
+
+[node name="Area2D" type="Area2D" parent="Ears"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ears/Area2D"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="HealthComponent" type="Node" parent="Ears"]
+script = ExtResource("6_s8gfb")
+max_health = 5
+health = 5
+gib_effect_scene = ExtResource("4_xdl0o")
+metadata/_custom_type_script = "uid://df356su15y7ow"
+
+[node name="MeleeAttackIgnoreComponent" type="Node" parent="Ears"]
+script = ExtResource("9_67tnm")
+metadata/_custom_type_script = "uid://b4ckmc2py8cmg"
+
+[node name="Liver" type="CharacterBody2D" parent="."]
+z_index = 1
+collision_layer = 16
+collision_mask = 0
+motion_mode = 1
+
+[node name="Texture" type="Sprite2D" parent="Liver"]
+position = Vector2(1, 1)
+texture = ExtResource("8_xdl0o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Liver"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="OrganComponent" type="Node" parent="Liver" node_paths=PackedStringArray("area2d", "step_sound")]
+script = ExtResource("4_kg6vs")
+area2d = NodePath("../Area2D")
+step_sound = NodePath("StepSound")
+blood_scene = ExtResource("12_uu161")
+min_acceleration_time = 0.6
+max_acceleration_time = 0.8
+metadata/_custom_type_script = "uid://d2eyb2xe1mh3p"
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="Liver/OrganComponent"]
+stream = ExtResource("11_2ypa8")
+volume_db = -20.0
+playback_type = 1
+
+[node name="Area2D" type="Area2D" parent="Liver"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Liver/Area2D"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="HealthComponent" type="Node" parent="Liver"]
+script = ExtResource("6_s8gfb")
+max_health = 5
+health = 5
+gib_effect_scene = ExtResource("4_xdl0o")
+metadata/_custom_type_script = "uid://df356su15y7ow"
+
+[node name="MeleeAttackIgnoreComponent" type="Node" parent="Liver"]
+script = ExtResource("9_67tnm")
+metadata/_custom_type_script = "uid://b4ckmc2py8cmg"
+
+[node name="Kidney" type="CharacterBody2D" parent="."]
+z_index = 1
+collision_layer = 16
+collision_mask = 0
+motion_mode = 1
+
+[node name="Texture" type="Sprite2D" parent="Kidney"]
+position = Vector2(1, 1)
+texture = ExtResource("9_kg6vs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Kidney"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="OrganComponent" type="Node" parent="Kidney" node_paths=PackedStringArray("area2d", "step_sound")]
+script = ExtResource("4_kg6vs")
+area2d = NodePath("../Area2D")
+step_sound = NodePath("StepSound")
+blood_scene = ExtResource("12_uu161")
+min_acceleration_time = 0.6
+max_acceleration_time = 0.8
+metadata/_custom_type_script = "uid://d2eyb2xe1mh3p"
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="Kidney/OrganComponent"]
+stream = ExtResource("11_2ypa8")
+volume_db = -20.0
+playback_type = 1
+
+[node name="Area2D" type="Area2D" parent="Kidney"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Kidney/Area2D"]
+shape = SubResource("CircleShape2D_uu161")
+
+[node name="HealthComponent" type="Node" parent="Kidney"]
+script = ExtResource("6_s8gfb")
+max_health = 5
+health = 5
+gib_effect_scene = ExtResource("4_xdl0o")
+metadata/_custom_type_script = "uid://df356su15y7ow"
+
+[node name="MeleeAttackIgnoreComponent" type="Node" parent="Kidney"]
+script = ExtResource("9_67tnm")
+metadata/_custom_type_script = "uid://b4ckmc2py8cmg"
+
+[node name="GibSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_2ypa8")
+autoplay = true
+
+[node name="Blood" parent="." instance=ExtResource("12_uu161")]
+z_index = 0
+emitting = true
+amount = 32
+lifetime = 0.32
+one_shot = false
+speed_scale = 2.94
+visibility_rect = Rect2(-1000, -1000, 2000, 2000)
+process_material = SubResource("ParticleProcessMaterial_67tnm")
+
+[node name="GPUParticles2D2" parent="." instance=ExtResource("14_eb50u")]
+z_index = 2
+texture = ExtResource("15_s8gfb")
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_2ypa8")
+volume_db = -20.0
+autoplay = true
+
+[connection signal="timeout" from="PauseTimer" to="." method="_on_pause_timer_timeout"]

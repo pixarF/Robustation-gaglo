@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctjnwl5bhistw"]
+
+[ext_resource type="Script" uid="uid://cbntkpop03p5e" path="res://Components/Entity/PhysicalParticleComponent.gd" id="1_xwp0d"]
+[ext_resource type="AudioStream" uid="uid://udkj0cyu458c" path="res://Resources/Audio/CasingRandom.tres" id="2_xwp0d"]
+
+[node name="Case" type="CharacterBody2D"]
+motion_mode = 1
+
+[node name="Texture" type="Sprite2D" parent="."]
+
+[node name="PhysicalParticleComponent" type="Node" parent="." node_paths=PackedStringArray("fall_sound")]
+script = ExtResource("1_xwp0d")
+fall_sound = NodePath("FallSound")
+metadata/_custom_type_script = "uid://cbntkpop03p5e"
+
+[node name="FallSound" type="AudioStreamPlayer2D" parent="PhysicalParticleComponent"]
+stream = ExtResource("2_xwp0d")

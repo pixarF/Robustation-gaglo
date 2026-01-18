@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://vj6mn42tufxs"]
+
+[ext_resource type="PackedScene" uid="uid://ctjnwl5bhistw" path="res://Scenes/Effects/Particles/Case/BaseCase.tscn" id="1_3rsc1"]
+[ext_resource type="Texture2D" uid="uid://ckhcd2ri38twv" path="res://Textures/Weapons/Shotgun/shotgun_case.png" id="2_gvpby"]
+[ext_resource type="AudioStream" uid="uid://ddyhsyuivc8o4" path="res://Audio/Effects/shotgun_casing_fall.ogg" id="3_gvpby"]
+
+[node name="ShotgunCase" instance=ExtResource("1_3rsc1")]
+
+[node name="Texture" parent="." index="0"]
+texture = ExtResource("2_gvpby")
+
+[node name="FallSound" parent="PhysicalParticleComponent" index="0"]
+stream = ExtResource("3_gvpby")

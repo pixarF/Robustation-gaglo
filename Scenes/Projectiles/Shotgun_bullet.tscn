@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://8u8crosi4th3"]
+
+[ext_resource type="PackedScene" uid="uid://c2fs5eoy7ntgu" path="res://Scenes/Projectiles/BaseProjectile.tscn" id="1_uq5et"]
+[ext_resource type="AudioStream" uid="uid://cg0leh0na5lvv" path="res://Resources/Audio/BulletHitRandom.tres" id="2_box70"]
+[ext_resource type="Texture2D" uid="uid://cjw2xf8pptrke" path="res://Textures/Weapons/Shotgun/Bullet.png" id="3_1uto6"]
+[ext_resource type="Script" uid="uid://0qaedvb6js57" path="res://Components/Triggers/SetProjectileExplosionOnTriggerComponent.gd" id="4_1uto6"]
+[ext_resource type="PackedScene" uid="uid://c03qvua0tf8st" path="res://Scenes/Explosion/MiniExplosion.tscn" id="5_1uto6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uq5et"]
+
+[sub_resource type="Curve" id="Curve_0hneg"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1.011236), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_c1ng1"]
+curve = SubResource("Curve_0hneg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nkfxt"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_over_velocity_max = 1000.0
+scale_over_velocity_curve = SubResource("CurveTexture_c1ng1")
+
+[node name="Projectile" instance=ExtResource("1_uq5et")]
+
+[node name="ProjectileComponent" parent="." index="0" node_paths=PackedStringArray("texture", "particle_emitter")]
+collision_layer = 15
+collision_mask = 15
+texture = NodePath("../Texture")
+particle_emitter = NodePath("GPUParticles2D")
+speed = 1500
+damage = 40
+lifetime = 1.0
+throw_speed = 50.0
+parry_speed_boost = 1.0
+
+[node name="CollisionShape2D" parent="ProjectileComponent" index="0"]
+shape = SubResource("CircleShape2D_uq5et")
+
+[node name="HitSound" parent="ProjectileComponent" index="1"]
+stream = ExtResource("2_box70")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ProjectileComponent" index="2"]
+modulate = Color(0.8175213, 0.8175213, 0.81752115, 1)
+amount = 100
+lifetime = 2.0
+preprocess = 0.5
+speed_scale = 8.11
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_nkfxt")
+
+[node name="Texture" type="Sprite2D" parent="." index="1"]
+texture = ExtResource("3_1uto6")
+
+[node name="SetProjectileExplosionOnTriggerComponent2" type="Node" parent="." index="5"]
+script = ExtResource("4_1uto6")
+explosion_scene = ExtResource("5_1uto6")
+explode_on_hit = true
+explode_lifetime = 3.0
+metadata/_custom_type_script = "uid://0qaedvb6js57"
