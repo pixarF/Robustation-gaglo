@@ -22,7 +22,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if parent.has_node("InputMoverComponent"):
 		input()
-
+	
 func input():
 	if Input.is_action_just_pressed("movement_ability"):
 		kick()
@@ -42,6 +42,7 @@ func kick():
 			can_teleport = false
 		
 		can_teleport_timer.start()
+		target_clear_timer.start()
 		return
 	
 	elif kick_target != null and can_teleport == true and kicks < max_kicks:

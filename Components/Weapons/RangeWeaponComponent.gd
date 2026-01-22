@@ -21,7 +21,7 @@ class_name RangeWeapon extends Weapon
 @export var gun_fire_effect: PackedScene
 
 @warning_ignore("unused_parameter")
-func attack(raiser, npc):
+func attack(raiser, npc = true):
 	if cooldown == true or can_attack == false or swinging == true or projectile == null or not raiser.has_method("get_attack_direction"):
 		return
 	
@@ -36,7 +36,7 @@ func attack(raiser, npc):
 	
 	if parent.has_node("MobMoverComponent"):
 		if self_throw_speed != 0:
-			parent.get_node("MobMoverComponent").throw(-direction, self_throw_speed, self_throw_stop_speed)
+			parent.get_node("MobMoverComponent").throw(-direction, self_throw_speed, null, self_throw_stop_speed)
 	
 	if shots > 1:
 		var total_spread = deg_to_rad(shots_angle)

@@ -100,7 +100,7 @@ func _on_body_entered(body: Node2D) -> void:
 		body.get_node("HealthComponent").take_damage(modified_damage, shooter)
 	
 	if body.has_node("MobMoverComponent"):
-		body.get_node("MobMoverComponent").throw(parent.velocity, throw_speed)
+		body.get_node("MobMoverComponent").throw(parent.velocity, throw_speed, shooter)
 	
 	if explode_on_hit == true:
 		explode()

@@ -4,5 +4,8 @@
 
 [node name="MiniExplosion" instance=ExtResource("1_wupnp")]
 damage = 30.0
-fly_force = 1000
+fly_force = 700
 radius = 64
+
+[node name="GPUParticles2D" parent="." index="1"]
+amount = 700

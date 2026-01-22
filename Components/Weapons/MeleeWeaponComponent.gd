@@ -121,7 +121,7 @@ func _melee_attack_target(target, direction = null, multiple_attack = false):
 	
 	if target.has_node("MobMoverComponent"):
 		if throw_speed != 0:
-			target.get_node("MobMoverComponent").throw(direction, throw_speed)
+			target.get_node("MobMoverComponent").throw(direction, throw_speed, parent)
 		if drop_enemy_delay != 0:
 			target.get_node("MobMoverComponent").drop(drop_enemy_delay)
 	

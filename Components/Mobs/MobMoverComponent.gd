@@ -8,22 +8,28 @@ class_name MobMoverComponent extends Component
 @export var friction: int = 700
 var direction = Vector2.ZERO
 
-@export var can_fall: bool = false
+@export var can_fall: bool = true
 @export var movement_blocked: bool = false
 @export var set_navigation_velocity: bool = false
 
+@export var fly_impact_area: Area2D
 var flying: bool = false
 var base_fly_speed: float = 0.0
 var fly_speed: float = 0.0
 var fly_direction: Vector2 = Vector2.ZERO
 var fly_stop_speed: float = 200
 var fly_modifier: float = 1
+var fly_source
 
 @export var body_fall_sound: AudioStreamPlayer2D
 var fallen: bool = false
 var standing_delay: float = 0
 
 @export var fall_effect: PackedScene = preload("res://Scenes/Effects/Particles/Fall.tscn")
+
+func _ready() -> void:
+	if fly_impact_area != null:
+		fly_impact_area.body_entered.connect(on_fly_impact)
 
 func _physics_process(delta: float) -> void:
 	_fly(delta)
@@ -95,10 +101,16 @@ func _fly(delta):
 		fly_direction = Vector2.ZERO
 		parent.velocity = Vector2.ZERO
 		flying = false
+		var tween = create_tween()
+		tween.set_trans(Tween.TRANS_SINE)
+		tween.set_ease(Tween.EASE_IN_OUT)
+		
+		tween.tween_property(parent, "scale", Vector2(1, 1), 0.2)
 
-func throw(throw_direction: Vector2, throw_speed: float, throw_stop_speed: float = 10):
+func throw(throw_direction: Vector2, throw_speed: float, throw_source = null, throw_stop_speed: float = 10, animation = true):
 	var max_throw_speed = 2000
 	var actual_speed = min(throw_speed, max_throw_speed)
+	fly_source = throw_source
 	
 	if throw_direction.length_squared() > 0:
 		fly_direction = throw_direction.normalized()
@@ -111,6 +123,13 @@ func throw(throw_direction: Vector2, throw_speed: float, throw_stop_speed: float
 	
 	if fly_speed > 100 and fly_direction != Vector2.ZERO:
 		flying = true
+	
+	if animation == true:
+		var tween = create_tween()
+		tween.set_trans(Tween.TRANS_SINE)
+		tween.set_ease(Tween.EASE_IN_OUT)
+		
+		tween.tween_property(parent, "scale", Vector2(1.5, 1.5), 0.2)
 
 func _fall_process(delta):
 	if fallen == false:
@@ -122,6 +141,9 @@ func _fall_process(delta):
 		stand_up()
 
 func drop(delay):
+	if can_fall == false:
+		return
+	
 	standing_delay += delay
 	
 	if fallen == true:
@@ -155,3 +177,18 @@ func stand_up():
 	await get_tree().create_timer(0.3).timeout
 	
 	fallen = false
+ 
+func on_fly_impact(body):
+	if not flying:
+		return
+	if not body.has_node("MobMoverComponent") or fly_speed < 200:
+		return
+	if body is Area2D or body == parent:
+		return
+	var mob_mover = body.get_node("MobMoverComponent")
+	if mob_mover.can_fall == false:
+		return
+	mob_mover.throw(parent.velocity, fly_speed/1.5)
+	mob_mover.drop(1)
+	if body.has_node("HealthComponent"):
+		body.get_node("HealthComponent").take_damage(fly_speed/50, fly_source)

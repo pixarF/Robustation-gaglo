@@ -31,8 +31,9 @@ motion_mode = 1
 script = ExtResource("8_gq5ok")
 metadata/_custom_type_script = "uid://dcmqlndbp0jp7"
 
-[node name="MobMoverComponent" type="Node" parent="." node_paths=PackedStringArray("body_fall_sound")]
+[node name="MobMoverComponent" type="Node" parent="." node_paths=PackedStringArray("fly_impact_area", "body_fall_sound")]
 script = ExtResource("10_nmodv")
+fly_impact_area = NodePath("../Area2D")
 body_fall_sound = NodePath("../Sounds/BodyFall")
 metadata/_custom_type_script = "uid://dfs78nrhukxbl"
 

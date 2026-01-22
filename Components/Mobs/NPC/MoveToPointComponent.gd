@@ -9,6 +9,9 @@ class_name MoveToPointComponent extends BaseMobBehaviorComponent
 @onready var direction_component: DirectionComponent = parent.get_node_or_null("DirectionComponent")
 var pathfinding_timer: Timer
 
+@export var run_to_target_range: float = 130
+@export var run_from_target_range: float = 250
+
 func set_point(position, priority):
 	if curret_priority > priority:
 		return
@@ -37,7 +40,21 @@ func _process(delta: float) -> void:
 	if mob_mover_component == null or navigation_agent == null:
 		return
 	
-	if navigation_agent.is_navigation_finished() or (point - parent.global_position).length() < stop_range:
+	var direction_to_target = (point - parent.global_position)
+	var distance_to_target = direction_to_target.length()
+	
+	if distance_to_target > run_from_target_range:
+		mob_mover_component.direction = direction_to_target.normalized()
+	elif distance_to_target < run_to_target_range:
+		var away_direction = -direction_to_target.normalized()
+		mob_mover_component.direction = away_direction
+		_set_direction()
+		return
+	else:
+		mob_mover_component.direction = Vector2.ZERO
+		return
+	
+	if navigation_agent.is_navigation_finished() or distance_to_target < stop_range:
 		if mob_mover_component.direction != Vector2.ZERO:
 			mob_mover_component.direction = Vector2.ZERO
 			curret_priority = -1
@@ -46,6 +63,14 @@ func _process(delta: float) -> void:
 	
 	mob_mover_component.direction = parent.global_position.direction_to(navigation_agent.get_next_path_position())
 	_set_direction()
+
+func _keep_distance():
+	var direction_from_target = (parent.global_position - point).normalized()
+	
+	var spread = deg_to_rad(randf_range(-30, 30))
+	var escape_direction = direction_from_target.rotated(spread)
+	
+	return escape_direction
 
 func _set_direction():
 	if direction_component == null:

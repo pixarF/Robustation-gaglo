@@ -78,8 +78,7 @@ func dash(direction):
 	if dash_sound != null:
 		dash_sound.play()
 	
-	mob_mover_component.throw(direction, dash_speed, 1000)
-	mob_mover_component.stand_up()
+	mob_mover_component.throw(direction, dash_speed, null, 1000, false)
 	
 	_cooldown()
 	_INVINCIBLE()
@@ -120,4 +119,4 @@ func _on_collision(body):
 		var random_direction = parent.velocity.rotated(angle).normalized()
 		
 		mob_mover.drop(1)
-		mob_mover.throw(random_direction, 300)
+		mob_mover.throw(random_direction, 300, parent)

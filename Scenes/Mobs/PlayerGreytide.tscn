@@ -174,9 +174,11 @@ stream = ExtResource("11_si836")
 
 [node name="CanTeleportTimer" type="Timer" parent="KickDashAbilityComponent" index="1"]
 wait_time = 0.5
+one_shot = true
 ignore_time_scale = true
 
 [node name="TargetClearTimer" type="Timer" parent="KickDashAbilityComponent" index="2"]
+one_shot = true
 ignore_time_scale = true
 
 [node name="Teleport" type="AudioStreamPlayer2D" parent="Sounds" index="0"]

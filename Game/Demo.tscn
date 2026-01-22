@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://roeennw572p2" path="res://Scenes/Mobs/PlayerGreytide.tscn" id="2_84lva"]
 [ext_resource type="TileSet" uid="uid://bc7bghcv8144y" path="res://Resources/TileMaps/Tiles.tres" id="3_7ee7k"]
-[ext_resource type="PackedScene" uid="uid://c0eulucj1dtco" path="res://Scenes/Mobs/Base/BaseEnemy.tscn" id="4_xwwje"]
+[ext_resource type="PackedScene" uid="uid://vjubfbb1hjee" path="res://Scenes/Mobs/Assistant.tscn" id="3_xwwje"]
 
 [sub_resource type="Environment" id="Environment_7ee7k"]
 background_mode = 3
@@ -31,5 +31,5 @@ environment = SubResource("Environment_7ee7k")
 [node name="Player" parent="." instance=ExtResource("2_84lva")]
 position = Vector2(20, 33)
 
-[node name="BaseEnemy" parent="." instance=ExtResource("4_xwwje")]
-position = Vector2(-227, 27)
+[node name="Assistant" parent="." instance=ExtResource("3_xwwje")]
+position = Vector2(-248, -1)

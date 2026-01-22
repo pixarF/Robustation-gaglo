@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bbqpmpj4ntyg"]
+[gd_scene load_steps=9 format=3 uid="uid://bbqpmpj4ntyg"]
 
 [ext_resource type="Script" uid="uid://b8ixjn50v3a88" path="res://Scripts(REFACTOR NEEDED)/ExplosionSystem.gd" id="1_cpk21"]
 [ext_resource type="PackedScene" uid="uid://bjqvcwxstx8u1" path="res://Scenes/Effects/Particles/Boom.tscn" id="2_a5ua4"]
@@ -7,6 +7,30 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a5ua4"]
 radius = 132.30646
+
+[sub_resource type="Curve" id="Curve_mgjcw"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1.011236), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_c1ng1"]
+curve = SubResource("Curve_mgjcw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a5ua4"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_max = 51.719997
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 130.45
+linear_accel_max = 244.81999
+radial_accel_min = -100.0
+radial_accel_max = 99.99999
+scale_max = 5.0
+scale_over_velocity_max = 218.39
+scale_over_velocity_curve = SubResource("CurveTexture_c1ng1")
+hue_variation_min = -1.0
+hue_variation_max = -0.67
 
 [node name="BaseExplosion" type="Node2D"]
 script = ExtResource("1_cpk21")
@@ -26,9 +50,9 @@ shape = SubResource("CircleShape2D_a5ua4")
 
 [node name="GPUParticles2D" parent="." instance=ExtResource("2_cq02y")]
 modulate = Color(1.5229772, 1.5229772, 1.5229772, 1)
-emitting = false
 amount = 3000
-lifetime = 1.0
+lifetime = 5.93
+process_material = SubResource("ParticleProcessMaterial_a5ua4")
 
 [node name="GPUParticles2D2" parent="." instance=ExtResource("2_a5ua4")]
 position = Vector2(-1, -1)

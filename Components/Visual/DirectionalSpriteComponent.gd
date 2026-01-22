@@ -3,10 +3,17 @@ class_name DirectionalSprite extends Sprite2D
 var parent = get_parent()
 @onready var direction_component : DirectionComponent = get_direction_component()
 
+@export var random_textures : Array[Texture2D]
+@export var random_color : bool = false
+
 func _notification(notif):
 	if notif == NOTIFICATION_PARENTED:
 		parent = get_parent()
 		direction_component = get_direction_component()
+	if not random_textures.is_empty():
+		texture = random_textures.pick_random()
+	if random_color:
+		self_modulate = Color(randf_range(0,0.4), randf_range(0,0.4), randf_range(0,0.4))
 
 func get_direction_component():
 	if parent.has_node("DirectionComponent"):
