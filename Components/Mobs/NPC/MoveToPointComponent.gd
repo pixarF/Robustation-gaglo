@@ -1,8 +1,8 @@
-class_name MoveToPointComponent extends BaseMobBehaviorComponent
+class_name MoveToPointComponent extends Component
 
 @export var navigation_agent: NavigationAgent2D
 @export var point: Vector2
-@export var curret_priority: int = -1
+@export var current_priority: int = -1
 @export var stop_range: int = 48
 @export var update_rate: float = 0.1
 @onready var mob_mover_component: MobMoverComponent = parent.get_node_or_null("MobMoverComponent")
@@ -14,14 +14,12 @@ var pathfinding_timer: Timer
 @export var look_at_direction: bool = false
 
 func set_point(position, priority):
-	if curret_priority > priority:
+	if current_priority > priority:
 		return
-	
+	current_priority = priority
 	point = position
 
 func _ready() -> void:
-	super._ready()
-	
 	pathfinding_timer = Timer.new()
 	add_child(pathfinding_timer)
 	pathfinding_timer.one_shot = true
@@ -58,7 +56,7 @@ func _process(delta: float) -> void:
 	if navigation_agent.is_navigation_finished() or distance_to_target < stop_range:
 		if mob_mover_component.direction != Vector2.ZERO:
 			mob_mover_component.direction = Vector2.ZERO
-			curret_priority = -1
+			current_priority = -1
 			point = Vector2.ZERO
 		return
 	

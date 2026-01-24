@@ -9,6 +9,8 @@ var speed_modification: int
 var acceleration_modification: int
 var friction_modification: int
 
+var effect_tween: Tween
+
 func activate_ability():
 	if mob_mover_component == null:
 		return
@@ -31,15 +33,16 @@ func activate_ability():
 	time_tween.tween_property(Engine, "time_scale", 0.35, 0.5)
 	
 	if overdose_effect != null and overdose_effect.material != null:
-		var _tween = create_tween()
-		_tween.set_trans(Tween.TRANS_SINE)
-		_tween.set_ease(Tween.EASE_IN_OUT)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/alpha", 1, 0.5)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/red_factor", 2, ability_delay)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/blue_factor", 2, ability_delay)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/green_factor", 1, ability_delay)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/hue_shift", -0.3, ability_delay)
-		_tween.set_ignore_time_scale(true)
+		effect_tween = create_tween()
+		effect_tween.set_trans(Tween.TRANS_SINE)
+		effect_tween.set_ease(Tween.EASE_IN_OUT)
+		effect_tween.tween_property(overdose_effect.material, "shader_parameter/alpha", 1, 0.5)
+		effect_tween.tween_property(overdose_effect.material, "shader_parameter/red_factor", 2, ability_delay)
+		effect_tween.tween_property(overdose_effect.material, "shader_parameter/blue_factor", 2, ability_delay)
+		effect_tween.tween_property(overdose_effect.material, "shader_parameter/green_factor", 1, ability_delay)
+		effect_tween.tween_property(overdose_effect.material, "shader_parameter/hue_shift", -0.3, ability_delay)
+		effect_tween.set_ignore_time_scale(true)
+		effect_tween.set_loops()
 
 func overdose_effects():
 	var trail = TrailEffectComponent.new()
@@ -59,11 +62,12 @@ func disable_ability():
 	mob_mover_component.fly_modifier = 1
 	
 	if overdose_effect != null and overdose_effect.material != null:
-		var _tween = create_tween()
-		_tween.set_trans(Tween.TRANS_SINE)
-		_tween.set_ease(Tween.EASE_IN_OUT)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/alpha", 0, 0.5)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/red_factor", 1, 0.5)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/blue_factor", 1, 0.5)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/green_factor", 1, 0.5)
-		_tween.tween_property(overdose_effect.material, "shader_parameter/hue_shift", 0, 0.5)
+		effect_tween.kill()
+		var tween = create_tween()
+		tween.set_trans(Tween.TRANS_SINE)
+		tween.set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(overdose_effect.material, "shader_parameter/alpha", 0, 0.5)
+		tween.tween_property(overdose_effect.material, "shader_parameter/red_factor", 1, 0.5)
+		tween.tween_property(overdose_effect.material, "shader_parameter/blue_factor", 1, 0.5)
+		tween.tween_property(overdose_effect.material, "shader_parameter/green_factor", 1, 0.5)
+		tween.tween_property(overdose_effect.material, "shader_parameter/hue_shift", 0, 0.5)

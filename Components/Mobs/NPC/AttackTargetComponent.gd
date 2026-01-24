@@ -1,14 +1,12 @@
-class_name AttackTargetComponent extends BaseMobBehaviorComponent
+class_name AttackTargetComponent extends Component
 
-@onready var move_to_target_component: MoveToTargetComponent = parent.get_node_or_null("MoveToTargetComponent")
+@onready var move_to_target_component: MoveToTargetComponent = get_parent().get_node_or_null("MoveToTargetComponent")
 @onready var weapon_user_component: WeaponUserComponent = parent.get_node_or_null("WeaponUserComponent")
 @onready var mob_mover_component: MobMoverComponent = parent.get_node_or_null("MobMoverComponent")
 
 var attack_direction
 
 func _ready() -> void:
-	super._ready()
-	
 	if move_to_target_component == null:
 		move_to_target_component = parent.get_node_or_null("MoveToTargetComponent")
 	if weapon_user_component == null:

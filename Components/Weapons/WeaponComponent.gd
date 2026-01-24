@@ -24,6 +24,8 @@ class_name Weapon extends Component
 @export var attack_rotation_multiplier: float = 1
 @export var attack_shift_multiplier: float = 1
 
+@export var parriable: bool = true
+
 var swinging_cancelled: bool
 
 func _ready() -> void:

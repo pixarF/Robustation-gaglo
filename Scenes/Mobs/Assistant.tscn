@@ -46,6 +46,11 @@ friction = 1300
 [node name="Texture" parent="." index="2"]
 random_textures = Array[Texture2D]([ExtResource("5_ngqn2"), ExtResource("4_r4whd")])
 
+[node name="MoveToTargetComponent" parent="AI" index="1"]
+set_player_as_target = null
+priority = null
+look_at_target = null
+
 [node name="Hair" type="Sprite2D" parent="." index="15"]
 texture = ExtResource("30_qavuh")
 offset = Vector2(0, -2)
@@ -92,7 +97,6 @@ stream = ExtResource("30_fg1co")
 script = ExtResource("26_kqv0r")
 damage = 3
 attack_range = 48
-parriable = false
 attack_sound = NodePath("HitSound")
 miss_sound = NodePath("MissSound")
 throw_stop_speed = 200
@@ -100,6 +104,7 @@ cooldown_delay = 0.1
 swing_delay = 0.2
 attack_rotation_multiplier = 0.5
 attack_shift_multiplier = 0.0
+parriable = false
 metadata/_custom_type_script = "uid://6b7bcparwq17"
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="RandomWeaponSelectorComponent/Fist" index="0"]

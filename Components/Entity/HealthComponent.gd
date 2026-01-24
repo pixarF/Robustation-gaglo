@@ -5,6 +5,7 @@ class_name HealthComponent extends Component
 @export var health: int = max_health: set = set_health, get = get_health
 @export var damage_modifier: float = 1
 @export var gibbed: bool = false
+@export var invinciblitiy_attack_effect: PackedScene
 
 @export var blood_effect_scene: PackedScene
 @export var blood_spurt_effect_scene: PackedScene
@@ -32,6 +33,8 @@ func _ready():
 	delayed_damage_timer.ignore_time_scale = ignore_time_scale
 	add_child(delayed_damage_timer)
 	delayed_damage_timer.start()
+	
+	health = max_health
 
 func set_health(new_health: int):
 	if shader == null and parent != null and parent.material != null:
@@ -57,6 +60,10 @@ func get_health():
 # Наносит урон и создаёт эффекты
 func take_damage(damage: int, damager):
 	if INVINCIBLE == true:
+		if invinciblitiy_attack_effect != null:
+			var inst = invinciblitiy_attack_effect.instantiate()
+			scene.add_child(inst)
+			inst.global_position = parent.global_position
 		return
 	
 	var modified_damage = damage * damage_modifier

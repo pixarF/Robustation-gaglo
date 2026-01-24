@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=4 uid="uid://biuw5t7gsnxbp"]
+[gd_scene load_steps=6 format=4 uid="uid://biuw5t7gsnxbp"]
 
 [ext_resource type="PackedScene" uid="uid://roeennw572p2" path="res://Scenes/Mobs/PlayerGreytide.tscn" id="2_84lva"]
 [ext_resource type="TileSet" uid="uid://bc7bghcv8144y" path="res://Resources/TileMaps/Tiles.tres" id="3_7ee7k"]
 [ext_resource type="PackedScene" uid="uid://vjubfbb1hjee" path="res://Scenes/Mobs/Assistant.tscn" id="3_xwwje"]
+[ext_resource type="PackedScene" uid="uid://cm7i3v6s6xr3n" path="res://Scenes/Mobs/Base/CleanBot.tscn" id="4_xwwje"]
 
 [sub_resource type="Environment" id="Environment_7ee7k"]
 background_mode = 3
@@ -34,17 +35,5 @@ position = Vector2(20, 33)
 [node name="Assistant" parent="." instance=ExtResource("3_xwwje")]
 position = Vector2(-248, -1)
 
-[node name="Assistant2" parent="." instance=ExtResource("3_xwwje")]
-position = Vector2(-356, 7)
-
-[node name="Assistant3" parent="." instance=ExtResource("3_xwwje")]
-position = Vector2(-301, -61)
-
-[node name="Assistant4" parent="." instance=ExtResource("3_xwwje")]
-position = Vector2(-314, 25)
-
-[node name="Assistant5" parent="." instance=ExtResource("3_xwwje")]
-position = Vector2(-455, 28)
-
-[node name="Assistant6" parent="." instance=ExtResource("3_xwwje")]
-position = Vector2(-390, -57)
+[node name="Cleanbot" parent="." instance=ExtResource("4_xwwje")]
+position = Vector2(48, -16)

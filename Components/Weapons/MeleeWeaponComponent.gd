@@ -4,7 +4,6 @@ class_name MeleeWeapon extends Weapon
 @export var attack_range: int = 64
 @export var slash_effect: PackedScene = preload("res://Scenes/Effects/Slash.tscn")
 
-@export var parriable: bool = true
 @export var parry_effect: PackedScene = preload("res://Scenes/Effects/Particles/ParryEffect.tscn")
 @export var parry_sound: AudioStreamPlayer2D
 @export var parry_color: Color = Color(5.565, 1.36, 1.878, 1.0)

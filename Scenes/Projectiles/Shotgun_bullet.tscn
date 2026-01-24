@@ -37,7 +37,6 @@ particle_emitter = NodePath("GPUParticles2D")
 speed = 1500
 damage = 40
 lifetime = 1.0
-throw_speed = 50.0
 parry_speed_boost = 1.0
 
 [node name="CollisionShape2D" parent="ProjectileComponent" index="0"]

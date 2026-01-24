@@ -1,11 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0eulucj1dtco"]
+[gd_scene load_steps=6 format=3 uid="uid://c0eulucj1dtco"]
 
 [ext_resource type="PackedScene" uid="uid://c0elisnkry0s6" path="res://Scenes/Mobs/Base/BaseMob.tscn" id="1_8ckee"]
+[ext_resource type="Script" uid="uid://crchnvrl7mcdd" path="res://Components/ComponentFolder.gd" id="2_4xxt2"]
 [ext_resource type="Script" uid="uid://vaff4lwkvrc7" path="res://Components/Mobs/NPC/MoveToPointComponent.gd" id="2_i6wsw"]
 [ext_resource type="Script" uid="uid://bv7whrderww4t" path="res://Components/Mobs/NPC/MoveToTargetComponent.gd" id="3_vb81k"]
 [ext_resource type="Script" uid="uid://yxsq46ajfdy4" path="res://Components/Mobs/NPC/AttackTargetComponent.gd" id="4_gb06t"]
 
 [node name="BaseEnemy" instance=ExtResource("1_8ckee")]
+
+[node name="MobMoverComponent" parent="." index="1"]
+set_navigation_velocity = true
 
 [node name="NavigationAgent" type="NavigationAgent2D" parent="." index="5"]
 avoidance_enabled = true
@@ -15,13 +19,12 @@ time_horizon_agents = 0.5
 avoidance_layers = 3
 avoidance_mask = 3
 
-[node name="WeaponUserComponent" parent="." index="7" node_paths=PackedStringArray("selected_weapon")]
-selected_weapon = NodePath("")
-
 [node name="WeaponTexture" parent="." index="8"]
 region_enabled = true
 
 [node name="AI" type="Node" parent="." index="14"]
+script = ExtResource("2_4xxt2")
+metadata/_custom_type_script = "uid://crchnvrl7mcdd"
 
 [node name="MoveToPointComponent" type="Node" parent="AI" index="0" node_paths=PackedStringArray("navigation_agent")]
 script = ExtResource("2_i6wsw")

@@ -1,10 +1,10 @@
 class_name BattleTendencyComponent extends Component
 
-@export var battle_tendency: float = 50
+@export var battle_tendency: float = 30
 @export var max_battle_tendency: float = 100
 @export var battle_tendecy_dependency: float = 1
 @export var battle_tendency_debuff_multiplier: float = 0.5
-@export var battle_tendency_buff_multiplier: float = 0.2
+@export var battle_tendency_buff_multiplier: float = 0.1
 @export var battle_tendency_bonus = 0
 @export var palette_section: int = 2
 @export var section: int = 2
@@ -94,7 +94,7 @@ func set_battle_tendency_modifiers():
 		return
 	
 	if section == 1:
-		weapon_user_component.damage_modifier = 0.5
+		weapon_user_component.damage_modifier -= 0.5
 		health_component.damage_modifier = 1.5
 	elif section == 2:
 		weapon_user_component.damage_modifier = 1

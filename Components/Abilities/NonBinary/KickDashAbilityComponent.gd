@@ -5,7 +5,7 @@ class_name KickDashAbilityComponent extends Component
 @export var can_teleport_timer: Timer
 
 @export var teleport_sound: AudioStreamPlayer2D
-@export var max_kicks: int = 3
+@export var max_kicks: int = 2
 var kicks: int = 0
 
 var last_kick_target: CharacterBody2D
@@ -77,9 +77,10 @@ func kick_teleport():
 		teleport_sound.global_position = parent.global_position
 		teleport_sound.play()
 	
-	if kicks > max_kicks and kick_target != null:
+	if kicks >= max_kicks and kick_target != null:
+		EventBusManager.kick_dash_combo.emit(parent)
 		if kick_target.has_node("HealthComponent"):
-			kick_target.get_node("HealthComponent").take_damage(kick_weapon.damage, parent)
+			kick_target.get_node("HealthComponent").take_damage(kick_weapon.damage * 10, parent)
 
 func _on_kick_teleport_timer_timeout() -> void:
 	if parent.has_node("HealthComponent"):

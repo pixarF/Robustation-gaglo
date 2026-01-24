@@ -1,4 +1,4 @@
-class_name MoveToTargetComponent extends BaseMobBehaviorComponent
+class_name MoveToTargetComponent extends Component
 
 @export var set_player_as_target: bool = true
 
@@ -6,12 +6,12 @@ class_name MoveToTargetComponent extends BaseMobBehaviorComponent
 @onready var move_to_point_component: MoveToPointComponent = get_parent().get_node_or_null("MoveToPointComponent")
 var direction_component: DirectionComponent
 
-@export var priority: int = 1
+@export var priority: int = 2
 @export var look_at_target: bool = true
 
 func _ready() -> void:
-	super._ready()
-	target = scene.get_node_or_null("Player")
+	if set_player_as_target == true:
+		target = scene.get_node_or_null("Player")
 	
 	direction_component = parent.get_node_or_null("DirectionComponent")
 

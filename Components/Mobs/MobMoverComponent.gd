@@ -130,7 +130,7 @@ func throw(throw_direction: Vector2, throw_speed: float, throw_source = null, th
 		tween.set_trans(Tween.TRANS_SINE)
 		tween.set_ease(Tween.EASE_IN_OUT)
 		
-		tween.tween_property(parent, "scale", Vector2(1.5, 1.5), 0.2)
+		tween.tween_property(parent, "scale", Vector2(1.35, 1.35), 0.2)
 
 func _fall_process(delta):
 	if fallen == false:

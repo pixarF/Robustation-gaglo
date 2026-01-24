@@ -17,8 +17,15 @@ func frame_freeze(impact_time = 0.3):
 
 func _ready() -> void:
 	EventBusManager.explosion.connect(on_exlosion)
+	EventBusManager.kick_dash_combo.connect(on_kickdash_combo)
 
 func on_exlosion(explosion):
 	if explosion.impact_frame == false:
 		return
 	impact_frame()
+
+func on_kickdash_combo(emitter):
+	if emitter != parent:
+		return
+	
+	impact_frame(0.1, 0.1)
