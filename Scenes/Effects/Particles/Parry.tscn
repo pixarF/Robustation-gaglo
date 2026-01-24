@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://lf1pf5qmfpp4"]
+[gd_scene load_steps=5 format=3 uid="uid://lf1pf5qmfpp4"]
 
-[ext_resource type="Script" uid="uid://bq58uyerhkt2q" path="res://Scripts(REFACTOR NEEDED)/Effects/TimedDelete.gd" id="2_hcue4"]
-[ext_resource type="PackedScene" uid="uid://bkvbjh83h5ap3" path="res://Scenes/Effects/Particles/ParrySymbols.tscn" id="2_i4s1l"]
+[ext_resource type="Script" uid="uid://bq58uyerhkt2q" path="res://Scripts/Effects/TimedDelete.gd" id="2_hcue4"]
 
 [sub_resource type="Curve" id="Curve_mgjcw"]
 _limits = [0.0, 3.0, 0.0, 1.0]
@@ -30,7 +29,6 @@ hue_variation_max = -0.54
 
 [node name="GPUParticles2D" type="GPUParticles2D"]
 self_modulate = Color(3.013768, 3.013768, 3.013768, 1)
-emitting = false
 amount = 40
 preprocess = 0.5
 speed_scale = 4.0
@@ -42,8 +40,5 @@ script = ExtResource("2_hcue4")
 wait_time = 0.4
 one_shot = true
 autostart = true
-
-[node name="GPUParticles2D2" parent="." instance=ExtResource("2_i4s1l")]
-modulate = Color(1.0964829, 1.0964829, 1.0964829, 1)
 
 [connection signal="timeout" from="Delete" to="." method="_on_delete_timeout"]

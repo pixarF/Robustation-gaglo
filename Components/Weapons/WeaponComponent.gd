@@ -24,6 +24,8 @@ class_name Weapon extends Component
 @export var attack_rotation_multiplier: float = 1
 @export var attack_shift_multiplier: float = 1
 
+var swinging_cancelled: bool
+
 func _ready() -> void:
 	if parent is not Node2D:
 		parent = parent.get_parent()
@@ -38,11 +40,13 @@ func _ready() -> void:
 func _swing(direction):
 	if swing_delay != 0:
 		swinging = true
+		swinging_cancelled = false
 		
 		if animation_component != null and swing_rotation_multiplier != 0:
 			animation_component.lean_to_direction(direction, 2, swing_delay, swing_rotation_multiplier)
 		
 		await get_tree().create_timer(swing_delay).timeout
+		
 		swinging = false
 
 func _cooldown():
@@ -52,5 +56,7 @@ func _cooldown():
 			await get_tree().create_timer(cooldown_delay).timeout
 		else:
 			await get_tree().create_timer(cooldown_delay, true, false, true).timeout
-		
 		cooldown = false
+
+func get_cooldown():
+	return cooldown

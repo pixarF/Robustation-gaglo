@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://roeennw572p2"]
+[gd_scene load_steps=31 format=3 uid="uid://roeennw572p2"]
 
 [ext_resource type="PackedScene" uid="uid://jg0ru5ss6ppw" path="res://Scenes/Mobs/Base/BasePlayer.tscn" id="1_mq7la"]
 [ext_resource type="AudioStream" uid="uid://djwhsufysh1dq" path="res://Resources/Audio/PunchRandom.tres" id="3_8fokh"]
@@ -28,6 +28,20 @@
 [ext_resource type="AudioStream" uid="uid://bxj6l4kb3ei8m" path="res://Audio/Effects/dash.ogg" id="25_hf65o"]
 [ext_resource type="AudioStream" uid="uid://xbdoc0n20dn" path="res://Audio/Effects/hypospray.ogg" id="26_27vau"]
 [ext_resource type="Script" uid="uid://b8d56xguabrvi" path="res://Components/Abilities/OverdoseAbilityComponent.gd" id="27_l8jtb"]
+[ext_resource type="Shader" uid="uid://4k7fthwpt7bc" path="res://Resources/Shaders/BattleTendency.gdshader" id="30_v1rwi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6fu7j"]
+shader = ExtResource("30_v1rwi")
+shader_parameter/red_factor = 0.3490000165775
+shader_parameter/green_factor = 1.0
+shader_parameter/blue_factor = 1.0
+shader_parameter/saturation = 1.0
+shader_parameter/brightness = 0.0
+shader_parameter/contrast = 2.0
+shader_parameter/hue_shift = 0.0
+shader_parameter/gamma = 1.0
+shader_parameter/alpha = 0.0
+shader_parameter/vignette_strength = 0.0
 
 [node name="Player" instance=ExtResource("1_mq7la")]
 
@@ -160,7 +174,8 @@ throw_speed = 500
 drop_enemy_delay = 1.0
 cooldown_delay = 2.0
 swing_delay = 0.0
-attack_rotation_multiplier = 0.5
+attack_rotation_multiplier = -1.0
+attack_shift_multiplier = -1.0
 metadata/_custom_type_script = "uid://6b7bcparwq17"
 
 [node name="MeleeMissSound" type="AudioStreamPlayer2D" parent="KickDashAbilityComponent/Kick" index="0"]
@@ -199,10 +214,26 @@ overdose_refuel_sound = NodePath("../Sounds/OverdoseRefuel")
 trail_colors = Array[Color]([Color(0.9866392, 0, 0.3066764, 1), Color(0.8036335, 0.0022644557, 0.98781973, 1)])
 metadata/_custom_type_script = "uid://cmonoqon5s4vx"
 
-[node name="OverdoseAbilityComponent" type="Node" parent="." index="20"]
+[node name="OverdoseAbilityComponent" type="Node" parent="." index="20" node_paths=PackedStringArray("overdose_effect")]
 script = ExtResource("27_l8jtb")
 trail_colors = Array[Color]([Color(0.8736105, 0, 0.34971508, 1), Color(0, 0.49991995, 0.47274232, 1), Color(0.5611145, 0.44604957, 0, 1)])
+overdose_effect = NodePath("CanvasLayer/ColorRect")
 ability_delay = 3.0
 metadata/_custom_type_script = "uid://b8d56xguabrvi"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="OverdoseAbilityComponent" index="0"]
+
+[node name="ColorRect" type="ColorRect" parent="OverdoseAbilityComponent/CanvasLayer" index="0"]
+z_index = 10
+material = SubResource("ShaderMaterial_6fu7j")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="ColorRect" parent="BattleTendencyComponent/CanvasLayer" index="0"]
+z_index = -1
 
 [connection signal="timeout" from="Toolbox/CooldownTimer" to="Toolbox" method="_on_cooldown_timer_timeout"]

@@ -3,6 +3,7 @@ class_name OverdoseAbilityComponent extends BaseAbilityComponent
 @onready var mob_mover_component: MobMoverComponent = parent.get_node_or_null("MobMoverComponent")
 
 @export var trail_colors: Array[Color]
+@export var overdose_effect: ColorRect
 
 var speed_modification: int
 var acceleration_modification: int
@@ -28,6 +29,17 @@ func activate_ability():
 	
 	var time_tween = create_tween()
 	time_tween.tween_property(Engine, "time_scale", 0.35, 0.5)
+	
+	if overdose_effect != null and overdose_effect.material != null:
+		var _tween = create_tween()
+		_tween.set_trans(Tween.TRANS_SINE)
+		_tween.set_ease(Tween.EASE_IN_OUT)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/alpha", 1, 0.5)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/red_factor", 2, ability_delay)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/blue_factor", 2, ability_delay)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/green_factor", 1, ability_delay)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/hue_shift", -0.3, ability_delay)
+		_tween.set_ignore_time_scale(true)
 
 func overdose_effects():
 	var trail = TrailEffectComponent.new()
@@ -45,3 +57,13 @@ func disable_ability():
 	mob_mover_component.acceleration -= acceleration_modification
 	mob_mover_component.friction -= friction_modification
 	mob_mover_component.fly_modifier = 1
+	
+	if overdose_effect != null and overdose_effect.material != null:
+		var _tween = create_tween()
+		_tween.set_trans(Tween.TRANS_SINE)
+		_tween.set_ease(Tween.EASE_IN_OUT)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/alpha", 0, 0.5)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/red_factor", 1, 0.5)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/blue_factor", 1, 0.5)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/green_factor", 1, 0.5)
+		_tween.tween_property(overdose_effect.material, "shader_parameter/hue_shift", 0, 0.5)

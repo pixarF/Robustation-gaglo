@@ -96,16 +96,17 @@ func _fly(delta):
 	
 	fly_speed -= 400 * delta
 	
+	if fly_speed < fly_stop_speed * 20:
+		var tween = create_tween()
+		tween.set_trans(Tween.TRANS_SINE)
+		tween.set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(parent, "scale", Vector2(1, 1), 0.2)
+	
 	if fly_speed < fly_stop_speed:
 		fly_speed = 0
 		fly_direction = Vector2.ZERO
 		parent.velocity = Vector2.ZERO
 		flying = false
-		var tween = create_tween()
-		tween.set_trans(Tween.TRANS_SINE)
-		tween.set_ease(Tween.EASE_IN_OUT)
-		
-		tween.tween_property(parent, "scale", Vector2(1, 1), 0.2)
 
 func throw(throw_direction: Vector2, throw_speed: float, throw_source = null, throw_stop_speed: float = 10, animation = true):
 	var max_throw_speed = 2000

@@ -1,18 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://c0eulucj1dtco"]
+[gd_scene load_steps=5 format=3 uid="uid://c0eulucj1dtco"]
 
 [ext_resource type="PackedScene" uid="uid://c0elisnkry0s6" path="res://Scenes/Mobs/Base/BaseMob.tscn" id="1_8ckee"]
 [ext_resource type="Script" uid="uid://vaff4lwkvrc7" path="res://Components/Mobs/NPC/MoveToPointComponent.gd" id="2_i6wsw"]
-[ext_resource type="Script" uid="uid://bi1gje1pfokqc" path="res://Components/Weapons/RangeWeaponComponent.gd" id="2_oun86"]
-[ext_resource type="PackedScene" uid="uid://8u8crosi4th3" path="res://Scenes/Projectiles/Shotgun_bullet.tscn" id="3_jvun6"]
 [ext_resource type="Script" uid="uid://bv7whrderww4t" path="res://Components/Mobs/NPC/MoveToTargetComponent.gd" id="3_vb81k"]
-[ext_resource type="PackedScene" uid="uid://vj6mn42tufxs" path="res://Scenes/Effects/Particles/Case/ShotgunCase.tscn" id="4_8db78"]
 [ext_resource type="Script" uid="uid://yxsq46ajfdy4" path="res://Components/Mobs/NPC/AttackTargetComponent.gd" id="4_gb06t"]
-[ext_resource type="PackedScene" uid="uid://cowxlra6ogbp0" path="res://Scenes/Effects/Particles/ShotgunFire.tscn" id="5_kt4ey"]
-[ext_resource type="Texture2D" uid="uid://3st8a6jvfl4i" path="res://Textures/Weapons/Shotgun/shotgun-inhand.png" id="6_107do"]
-[ext_resource type="Texture2D" uid="uid://b60x76q21cp5u" path="res://Textures/Weapons/Shotgun/shotgun_icon.png" id="7_5cpe6"]
-[ext_resource type="AudioStream" uid="uid://cenp8snm2kjdm" path="res://Audio/Weapon/Projectile/shotgun_shoot.ogg" id="8_3e0g7"]
-[ext_resource type="AudioStream" uid="uid://2r0y32cx4e8s" path="res://Audio/Weapon/empty.ogg" id="9_oemw8"]
-[ext_resource type="AudioStream" uid="uid://dhwn1xi06keaf" path="res://Audio/Weapon/shotgun_insert.ogg" id="10_noonm"]
 
 [node name="BaseEnemy" instance=ExtResource("1_8ckee")]
 
@@ -25,39 +16,7 @@ avoidance_layers = 3
 avoidance_mask = 3
 
 [node name="WeaponUserComponent" parent="." index="7" node_paths=PackedStringArray("selected_weapon")]
-selected_weapon = NodePath("Shotgun")
-
-[node name="Shotgun" type="Node" parent="WeaponUserComponent" index="0" node_paths=PackedStringArray("shoot_sound", "empty_shoot_sound", "bullets_recover_sound")]
-script = ExtResource("2_oun86")
-projectile = ExtResource("3_jvun6")
-spread_angle = 2
-bullets_max_count = 6
-bullets = 6
-bullets_recover_count = 6
-case_scene = ExtResource("4_8db78")
-shoot_sound = NodePath("ShootSound")
-empty_shoot_sound = NodePath("EmptySound")
-bullets_recover_sound = NodePath("BulletRecoverSound")
-bullets_recovery_delay = 2.0
-gun_fire_effect = ExtResource("5_kt4ey")
-cooldown_delay = 0.5
-swing_delay = 0.0
-equipped_texture = ExtResource("6_107do")
-icon_texture = ExtResource("7_5cpe6")
-self_throw_speed = 425
-swing_rotation_multiplier = 0.0
-attack_rotation_multiplier = -0.6
-attack_shift_multiplier = -0.7
-metadata/_custom_type_script = "uid://bi1gje1pfokqc"
-
-[node name="ShootSound" type="AudioStreamPlayer2D" parent="WeaponUserComponent/Shotgun" index="0"]
-stream = ExtResource("8_3e0g7")
-
-[node name="EmptySound" type="AudioStreamPlayer2D" parent="WeaponUserComponent/Shotgun" index="1"]
-stream = ExtResource("9_oemw8")
-
-[node name="BulletRecoverSound" type="AudioStreamPlayer2D" parent="WeaponUserComponent/Shotgun" index="2"]
-stream = ExtResource("10_noonm")
+selected_weapon = NodePath("")
 
 [node name="WeaponTexture" parent="." index="8"]
 region_enabled = true

@@ -33,3 +33,18 @@ position = Vector2(20, 33)
 
 [node name="Assistant" parent="." instance=ExtResource("3_xwwje")]
 position = Vector2(-248, -1)
+
+[node name="Assistant2" parent="." instance=ExtResource("3_xwwje")]
+position = Vector2(-356, 7)
+
+[node name="Assistant3" parent="." instance=ExtResource("3_xwwje")]
+position = Vector2(-301, -61)
+
+[node name="Assistant4" parent="." instance=ExtResource("3_xwwje")]
+position = Vector2(-314, 25)
+
+[node name="Assistant5" parent="." instance=ExtResource("3_xwwje")]
+position = Vector2(-455, 28)
+
+[node name="Assistant6" parent="." instance=ExtResource("3_xwwje")]
+position = Vector2(-390, -57)

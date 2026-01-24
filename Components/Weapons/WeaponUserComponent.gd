@@ -1,9 +1,15 @@
 class_name WeaponUserComponent extends Component
 
-@export var selected_weapon: Weapon : set = select_weapon
 @onready var weapon_texture: DirectionalSprite = parent.get_node("WeaponTexture")
+@onready var mob_mover_component: MobMoverComponent = parent.get_node("MobMoverComponent")
 
+@export var selected_weapon: Weapon : set = select_weapon
 @export var timers_timescaled: bool = true
+
+@export var block_when_fallen: bool = true
+@export var block_when_flying: bool = true
+
+@export var damage_modifier: float = 1
 
 func _ready() -> void:
 	if weapon_texture == null:
@@ -25,4 +31,15 @@ func select_weapon(new_weapon: Weapon):
 		weapon_texture.texture = selected_weapon.equipped_texture
 
 func attack(raiser):
+	if selected_weapon.get_cooldown() == true:
+		return
+	
+	selected_weapon.damage_modifier = damage_modifier
+	
+	if mob_mover_component != null:
+		if mob_mover_component.fallen == true and block_when_fallen == true:
+			return
+		if mob_mover_component.flying == true and block_when_flying == true:
+			return
+	
 	selected_weapon.attack(raiser)

@@ -1,10 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://jg0ru5ss6ppw"]
+[gd_scene load_steps=12 format=3 uid="uid://jg0ru5ss6ppw"]
 
 [ext_resource type="PackedScene" uid="uid://c0elisnkry0s6" path="res://Scenes/Mobs/Base/BaseMob.tscn" id="1_gq7me"]
 [ext_resource type="Shape2D" uid="uid://cnu52idib8ugp" path="res://Resources/Colliders/PlayerCollider.tres" id="2_7ipmw"]
 [ext_resource type="Script" uid="uid://clpuxn7ckkj6f" path="res://Components/Mobs/InputMoverComponent.gd" id="4_3n0k4"]
 [ext_resource type="Script" uid="uid://gek7ma2qpdp6" path="res://Components/Player/PlayerWeaponUserComponent.gd" id="5_3n0k4"]
 [ext_resource type="Script" uid="uid://cmmp453ap55cp" path="res://Components/Player/PlayerCamera.gd" id="5_korw6"]
+[ext_resource type="Script" uid="uid://djmi5xfppmrii" path="res://Components/Visual/HealthOverlayComponent.gd" id="6_korw6"]
+[ext_resource type="Material" uid="uid://bx7piwibywxgi" path="res://Resources/Shaders/DamageScreen.tres" id="7_5768p"]
+[ext_resource type="Script" uid="uid://bjb1tak0ajoof" path="res://Components/Player/BattleTendencyComponent.gd" id="8_ljr5e"]
+[ext_resource type="Material" uid="uid://dctvv4tidab2r" path="res://Resources/Shaders/BattleTendency.tres" id="9_d6ik8"]
+[ext_resource type="Script" uid="uid://c3d63pm2kikgh" path="res://Components/Player/ImpactFrameComponent.gd" id="10_m2dsc"]
+[ext_resource type="Material" uid="uid://dufhgddaeqjd4" path="res://Resources/Shaders/ImpactFrame.tres" id="11_oayod"]
 
 [node name="Player" instance=ExtResource("1_gq7me")]
 collision_layer = 1
@@ -36,6 +42,59 @@ faction = "Player"
 [node name="AudioListener" type="AudioListener2D" parent="." index="8"]
 current = true
 
+[node name="WeaponUserComponent" parent="." index="9"]
+block_when_fallen = false
+block_when_flying = false
+
 [node name="PlayerWeaponUserComponent" type="Node" parent="." index="11"]
 script = ExtResource("5_3n0k4")
 metadata/_custom_type_script = "uid://gek7ma2qpdp6"
+
+[node name="HealthOverlayComponent" type="Node" parent="." index="17" node_paths=PackedStringArray("overlay")]
+script = ExtResource("6_korw6")
+overlay = NodePath("CanvasLayer/ColorRect")
+metadata/_custom_type_script = "uid://djmi5xfppmrii"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="HealthOverlayComponent" index="0"]
+
+[node name="ColorRect" type="ColorRect" parent="HealthOverlayComponent/CanvasLayer" index="0"]
+material = ExtResource("7_5768p")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="BattleTendencyComponent" type="Node" parent="." index="18" node_paths=PackedStringArray("battle_tendency_effect")]
+script = ExtResource("8_ljr5e")
+battle_tendency_effect = NodePath("CanvasLayer/ColorRect")
+metadata/_custom_type_script = "uid://bjb1tak0ajoof"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="BattleTendencyComponent" index="0"]
+
+[node name="ColorRect" type="ColorRect" parent="BattleTendencyComponent/CanvasLayer" index="0"]
+material = ExtResource("9_d6ik8")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+
+[node name="ImpactFrameComponent" type="Node" parent="." index="19" node_paths=PackedStringArray("effect_frame")]
+script = ExtResource("10_m2dsc")
+effect_frame = NodePath("CanvasLayer/ColorRect")
+metadata/_custom_type_script = "uid://c3d63pm2kikgh"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="ImpactFrameComponent" index="0"]
+
+[node name="ColorRect" type="ColorRect" parent="ImpactFrameComponent/CanvasLayer" index="0"]
+visible = false
+material = ExtResource("11_oayod")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)

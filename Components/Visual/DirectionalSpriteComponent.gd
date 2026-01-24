@@ -10,10 +10,6 @@ func _notification(notif):
 	if notif == NOTIFICATION_PARENTED:
 		parent = get_parent()
 		direction_component = get_direction_component()
-	if not random_textures.is_empty():
-		texture = random_textures.pick_random()
-	if random_color:
-		self_modulate = Color(randf_range(0,0.4), randf_range(0,0.4), randf_range(0,0.4))
 
 func get_direction_component():
 	if parent.has_node("DirectionComponent"):
@@ -24,6 +20,10 @@ func get_direction_component():
 func _ready() -> void:
 	if direction_component != null:
 		direction_component.direction_changed.connect(change_sprite_direction)
+	if not random_textures.is_empty():
+		texture = random_textures.pick_random()
+	if random_color:
+		self_modulate = Color(randf_range(0,0.4), randf_range(0,0.4), randf_range(0,0.4))
 
 func change_sprite_direction(rect: Rect2):
 	region_rect = rect

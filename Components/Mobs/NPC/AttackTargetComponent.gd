@@ -31,15 +31,13 @@ func _process(delta: float) -> void:
 	attack_direction = move_to_target_component.target.global_position - parent.global_position
 	
 	var weapon = weapon_user_component.selected_weapon
-	if weapon.cooldown == true or weapon.can_attack == false:
-		return
 	
 	if weapon is MeleeWeapon:
-		if attack_direction.length > weapon.attack_range:
+		if attack_direction.length() > weapon.attack_range:
 			return
-		weapon.attack(self)
+		weapon_user_component.attack(self)
 	elif weapon.bullets != 0:
-		weapon.attack(self)
+		weapon_user_component.attack(self)
 
 func get_attack_direction():
 	return attack_direction

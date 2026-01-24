@@ -4,7 +4,8 @@ class_name MeleeWeapon extends Weapon
 @export var attack_range: int = 64
 @export var slash_effect: PackedScene = preload("res://Scenes/Effects/Slash.tscn")
 
-@export var parry_effect: PackedScene = preload("res://Scenes/Effects/Particles/Parry.tscn")
+@export var parriable: bool = true
+@export var parry_effect: PackedScene = preload("res://Scenes/Effects/Particles/ParryEffect.tscn")
 @export var parry_sound: AudioStreamPlayer2D
 @export var parry_color: Color = Color(5.565, 1.36, 1.878, 1.0)
 
@@ -13,7 +14,8 @@ class_name MeleeWeapon extends Weapon
 
 @export var parry_force: float = 0
 
-@export var throw_speed: int = 3000
+@export var throw_speed: int = 300
+@export var throw_stop_speed: int = 10
 @export var drop_enemy_delay: float = 0
 
 func attack(raiser, npc = true):
@@ -22,13 +24,24 @@ func attack(raiser, npc = true):
 	
 	if cooldown == true or can_attack == false or swinging == true:
 		return
-		
+	
 	if npc == true:
-		await _swing(raiser.get_attack_direction())
+		var succefull_swing = await attack_logic(raiser)
+		if succefull_swing == false:
+			return
 		_melee_attack_target(raiser.get_attack_target(), raiser.get_attack_direction())
 	else:
-		await _swing(raiser.get_attack_direction())
+		var succefull_swing = await attack_logic(raiser)
+		if succefull_swing == false:
+			return
 		return await _try_melee_attack(raiser.get_attack_direction())
+
+func attack_logic(raiser):
+	await _swing(raiser.get_attack_direction())
+	if swinging_cancelled == true:
+		return false
+	_cooldown()
+	return true
 
 func _try_melee_attack(direction):
 	await get_tree().physics_frame
@@ -92,6 +105,9 @@ func _melee_attack_target(target, direction = null, multiple_attack = false):
 		if _slash_effect.has_node("AnimationPlayer"):
 			_slash_effect.get_node("AnimationPlayer").play("Slash")
 	
+	if target != null and (target.global_position - parent.global_position).length() > attack_range:
+		target = null
+	
 	if attack_sound != null and target != null:
 		attack_sound.play()
 	elif miss_sound != null:
@@ -113,15 +129,21 @@ func _melee_attack_target(target, direction = null, multiple_attack = false):
 		var projectile = target.get_node("ProjectileComponent")
 		if projectile.parriable == false:
 			return
-		
 		parry_projectile(target, projectile, direction)
+	
+	if target.has_node("WeaponUserComponent"):
+		var target_weapon_user_component = target.get_node("WeaponUserComponent")
+		if target_weapon_user_component != null and target_weapon_user_component.selected_weapon != null:
+			var weapon = target_weapon_user_component.selected_weapon 
+			if weapon.swinging == true and weapon.parriable == true:
+				parry_weapon(weapon, target)
 	
 	if target.has_node("HealthComponent"):
 		target.get_node("HealthComponent").take_damage(damage * damage_modifier, parent)
 	
 	if target.has_node("MobMoverComponent"):
 		if throw_speed != 0:
-			target.get_node("MobMoverComponent").throw(direction, throw_speed, parent)
+			target.get_node("MobMoverComponent").throw(direction, throw_speed, parent, throw_stop_speed)
 		if drop_enemy_delay != 0:
 			target.get_node("MobMoverComponent").drop(drop_enemy_delay)
 	
@@ -131,7 +153,22 @@ func _melee_attack_target(target, direction = null, multiple_attack = false):
 	
 	return true
 
+func parry_weapon(weapon, target):
+	EventBusManager.parry.emit(parent)
+	weapon.swinging_cancelled = true
+	parry_effects()
+	
+	if target.has_node("HealthComponent"):
+		target.get_node("HealthComponent").take_damage(damage * 0.5, parent)
+	
+	var direction = (target.global_position - parent.global_position)
+	
+	if target.has_node("MobMoverComponent"):
+		target.get_node("MobMoverComponent").throw(-direction, 300, 50)
+		target.get_node("MobMoverComponent").drop(0.5)
+
 func parry_projectile(target, projectile, direction):
+		EventBusManager.parry.emit(parent)
 		var angle = direction.normalized().angle()
 		target.modulate = parry_color
 		target.global_rotation = angle
@@ -142,20 +179,21 @@ func parry_projectile(target, projectile, direction):
 		projectile.direction = angle
 		projectile.shooter = parent
 		
-		if parry_sound != null:
-			parry_sound.play()
-		if parry_effect != null:
-			var inst = parry_effect.instantiate()
-			inst.global_position = parent.global_position
-			inst.emitting = true
-			scene.add_child(inst)
+		parry_effects()
 		
 		var trail = TrailEffectComponent.new()
 		trail.trail_lifetime = 0.2
 		trail.end_color = Color(0.544, 0.0, 0.578, 0.0)
 		var colors: Array[Color] = [
 			Color(4.455, 0.0, 0.0, 1.0),
-			Color(3.236, 0.576, 1.751, 1.0)
-		]
+			Color(3.236, 0.576, 1.751, 1.0)]
 		trail.colors = colors
 		target.add_child(trail)
+
+func parry_effects():
+	if parry_sound != null:
+		parry_sound.play()
+	if parry_effect != null:
+		var inst = parry_effect.instantiate()
+		inst.global_position = parent.global_position
+		scene.add_child(inst)

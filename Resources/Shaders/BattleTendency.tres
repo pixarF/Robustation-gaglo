@@ -4,8 +4,8 @@
 
 [resource]
 shader = ExtResource("1_p2xjw")
-shader_parameter/red_factor = 1.10000005225
-shader_parameter/green_factor = 0.90000004275
+shader_parameter/red_factor = 1.0
+shader_parameter/green_factor = 1.0
 shader_parameter/blue_factor = 1.0
 shader_parameter/saturation = 1.0
 shader_parameter/brightness = 0.0

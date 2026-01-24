@@ -22,6 +22,8 @@ var delayed_damage_timer: Timer
 var delayed_damage_queue: Array = []
 var current_delayed_damage: int = 0
 
+signal health_changed(new_health)
+
 func _ready():
 	delayed_damage_timer = Timer.new()
 	delayed_damage_timer.wait_time = 1.0
@@ -31,14 +33,17 @@ func _ready():
 	add_child(delayed_damage_timer)
 	delayed_damage_timer.start()
 
-func set_health(_new_health: int):
+func set_health(new_health: int):
 	if shader == null and parent != null and parent.material != null:
 		shader = parent.material
 	
-	if _new_health < health:
-		if _new_health <= 0:
+	EventBusManager.health_changed.emit(parent, health, new_health)
+	
+	if new_health < health:
+		if new_health <= 0:
 			_death()
-	health = clamp(_new_health, 0, max_health)
+	health = clamp(new_health, 0, max_health)
+	health_changed.emit(health)
 	
 	health_effect()
 
@@ -59,6 +64,8 @@ func take_damage(damage: int, damager):
 	if damage > 0:
 		damage_effects(damager)
 	
+	EventBusManager.damaged.emit(parent, damage, damager)
+	
 	if damager == null:
 		return
 	var direction = (damager.global_position-parent.global_position)
@@ -77,21 +84,21 @@ func damage_effects(damager):
 		return
 	
 	var attack_direction = (parent.global_position - damager.global_position).normalized()
-	_flash(1)
+	_flash()
 	
 	if blood_effect_scene != null:
 		var blood_effect = blood_effect_scene.instantiate()
-		scene.add_child.call_deferred(blood_effect)
+		scene.add_child(blood_effect)
 		blood_effect.global_position = parent.global_position
 		blood_effect.rotation = attack_direction.angle()
 	
 	if blood_spurt_effect_scene != null:
 		var blood_spurt_effect = blood_spurt_effect_scene.instantiate()
-		scene.add_child.call_deferred(blood_spurt_effect)
+		scene.add_child(blood_spurt_effect)
 		blood_spurt_effect.emitting = true
 		blood_spurt_effect.global_position = parent.global_position
 
-func _flash(speed_multiplier, color: Color = Color(0.7, 0.0, 0.3, 0.7)):
+func _flash(speed_multiplier: float = 1, color: Color = Color(0.7, 0.0, 0.3, 0.7)):
 	if shader != null and shader.get_shader_parameter("flash_color"):
 		var _tween = create_tween()
 		_tween.set_trans(Tween.TRANS_SINE)
@@ -110,6 +117,8 @@ func _death():
 		gib_effect.global_position = parent.global_position
 	
 	parent.queue_free()
+	
+	EventBusManager.gibbed.emit(parent)
 
 func set_delayed_damage(damage: int, time: int):
 	delayed_damage_queue.append({"damage": damage, "time": time})

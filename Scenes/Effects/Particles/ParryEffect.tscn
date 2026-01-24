@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cxxmy5bq4pjdx"]
+[gd_scene load_steps=8 format=3 uid="uid://28ktlm8hudhq"]
 
-[ext_resource type="Material" uid="uid://cyp3pqnhbfrj3" path="res://Resources/Shaders/Jiggle.tres" id="1_11ca6"]
-[ext_resource type="Texture2D" uid="uid://bli7jsrusea5n" path="res://Textures/Effects/Particles/fall.png" id="2_11ca6"]
-[ext_resource type="Script" uid="uid://bq58uyerhkt2q" path="res://Scripts/Effects/TimedDelete.gd" id="3_d3snx"]
+[ext_resource type="Material" uid="uid://cyp3pqnhbfrj3" path="res://Resources/Shaders/Jiggle.tres" id="1_chbsr"]
+[ext_resource type="Texture2D" uid="uid://tq70wp3sblsx" path="res://Textures/Effects/Particles/parry.png" id="2_urugt"]
+[ext_resource type="Script" uid="uid://bq58uyerhkt2q" path="res://Scripts/Effects/TimedDelete.gd" id="3_jaw6g"]
+[ext_resource type="PackedScene" uid="uid://lf1pf5qmfpp4" path="res://Scenes/Effects/Particles/Parry.tscn" id="4_tulvs"]
 
 [sub_resource type="Gradient" id="Gradient_lvx2o"]
 offsets = PackedFloat32Array(0.009090909, 0.5090909, 0.9909091)
@@ -25,19 +26,22 @@ color_ramp = SubResource("GradientTexture1D_4ifew")
 [node name="GPUParticles2D" type="GPUParticles2D"]
 modulate = Color(2.4325802, 2.4325802, 2.4325802, 1)
 texture_filter = 1
-material = ExtResource("1_11ca6")
+material = ExtResource("1_chbsr")
 amount = 2
-texture = ExtResource("2_11ca6")
+texture = ExtResource("2_urugt")
 lifetime = 0.41
 preprocess = 0.5
 speed_scale = 0.7
 randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_mbpk4")
-script = ExtResource("3_d3snx")
+script = ExtResource("3_jaw6g")
 
 [node name="Delete" type="Timer" parent="."]
 wait_time = 0.4
 one_shot = true
 autostart = true
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("4_tulvs")]
+amount = 10
 
 [connection signal="timeout" from="Delete" to="." method="_on_delete_timeout"]

@@ -25,6 +25,8 @@ func _ready() -> void:
 		if child is GPUParticles2D:
 			child.emitting = true
 	
+	EventBusManager.explosion.emit(self)
+	
 	await get_tree().create_timer(explosion_duration).timeout
 	area2d.queue_free()
 

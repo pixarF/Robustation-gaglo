@@ -3,7 +3,19 @@ class_name AnimationComponent extends Component
 var animation_priority: int = -1
 var animation_tween: Tween = null
 
+var last_time_scale: float
+
 @export var ignore_time_scale: bool = false
+
+@warning_ignore("unused_parameter")
+func _process(delta: float) -> void:
+	if ignore_time_scale == true and last_time_scale == Engine.time_scale:
+		return
+	
+	last_time_scale = Engine.time_scale
+	
+	if animation_tween != null:
+		animation_tween.set_speed_scale(Engine.time_scale)
 
 func set_animation(tween, priority, rewrite = false):
 	if (priority > animation_priority) or (priority == animation_priority and rewrite == true):
