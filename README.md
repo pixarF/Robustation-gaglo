@@ -1,2 +1,3 @@
-https://geglo1485.itch.io/robustation
-https://discord.gg/5qeCwSqQ
+Game page: https://geglo1485.itch.io/robustation
+
+Discord: https://discord.gg/5qeCwSqQ
