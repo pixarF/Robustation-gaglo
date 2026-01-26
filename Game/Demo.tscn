@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=4 uid="uid://biuw5t7gsnxbp"]
+[gd_scene load_steps=9 format=4 uid="uid://biuw5t7gsnxbp"]
 
+[ext_resource type="Script" uid="uid://biu25s800hsex" path="res://Scripts/PrototypeArenaSystem.gd" id="1_7ee7k"]
 [ext_resource type="PackedScene" uid="uid://roeennw572p2" path="res://Scenes/Mobs/PlayerGreytide.tscn" id="2_84lva"]
 [ext_resource type="TileSet" uid="uid://bc7bghcv8144y" path="res://Resources/TileMaps/Tiles.tres" id="3_7ee7k"]
 [ext_resource type="PackedScene" uid="uid://detw4so2cuuhb" path="res://Scenes/Mobs/Bartender.tscn" id="4_a1dcl"]
@@ -20,6 +21,11 @@ glow_enabled = true
 glow_blend_mode = 1
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_7ee7k")
+assistant = ExtResource("6_qkpe2")
+pun_pun = ExtResource("5_a1dcl")
+bartender = ExtResource("4_a1dcl")
+cleanbot = ExtResource("4_xwwje")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 z_index = -2
@@ -34,26 +40,9 @@ environment = SubResource("Environment_7ee7k")
 [node name="Player" parent="." instance=ExtResource("2_84lva")]
 position = Vector2(20, 33)
 
-[node name="Cleanbot" parent="." instance=ExtResource("4_xwwje")]
-position = Vector2(48, -16)
+[node name="WaveTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
 
-[node name="Bartender" parent="." instance=ExtResource("4_a1dcl")]
-position = Vector2(-78, -44)
-
-[node name="PunPun" parent="." instance=ExtResource("5_a1dcl")]
-position = Vector2(-145, -113)
-
-[node name="Assistant" parent="." instance=ExtResource("6_qkpe2")]
-position = Vector2(-244, -181)
-
-[node name="Assistant2" parent="." instance=ExtResource("6_qkpe2")]
-position = Vector2(-370, -165)
-
-[node name="Assistant3" parent="." instance=ExtResource("6_qkpe2")]
-position = Vector2(-193, -259)
-
-[node name="Assistant4" parent="." instance=ExtResource("6_qkpe2")]
-position = Vector2(236, -295)
-
-[node name="Assistant5" parent="." instance=ExtResource("6_qkpe2")]
-position = Vector2(11, -318)
+[connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]

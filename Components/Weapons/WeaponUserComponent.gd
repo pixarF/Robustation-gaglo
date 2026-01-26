@@ -34,12 +34,12 @@ func attack(raiser):
 	if selected_weapon.get_cooldown() == true:
 		return
 	
-	selected_weapon.damage_modifier = damage_modifier
-	
 	if mob_mover_component != null:
 		if mob_mover_component.fallen == true and block_when_fallen == true:
 			return
 		if mob_mover_component.flying == true and block_when_flying == true:
 			return
+	
+	selected_weapon.damage_modifier = damage_modifier
 	
 	selected_weapon.attack(raiser)

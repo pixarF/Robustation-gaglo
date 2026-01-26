@@ -170,6 +170,7 @@ script = ExtResource("12_tn3ht")
 parry_sound = NodePath("ParrySound")
 attack_sound = NodePath("MeleeHitSound")
 miss_sound = NodePath("MeleeMissSound")
+can_parry_weapon = false
 parry_force = 1.5
 throw_speed = 500
 drop_enemy_delay = 1.0

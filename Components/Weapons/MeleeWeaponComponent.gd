@@ -11,6 +11,7 @@ class_name MeleeWeapon extends Weapon
 @export var attack_sound: AudioStreamPlayer2D
 @export var miss_sound: AudioStreamPlayer2D
 
+@export var can_parry_weapon: bool = true
 @export var parry_force: float = 0
 
 @export var throw_speed: int = 300
@@ -130,7 +131,7 @@ func _melee_attack_target(target, direction = null, multiple_attack = false):
 			return
 		parry_projectile(target, projectile, direction)
 	
-	if target.has_node("WeaponUserComponent"):
+	if can_parry_weapon and target.has_node("WeaponUserComponent"):
 		var target_weapon_user_component = target.get_node("WeaponUserComponent")
 		if target_weapon_user_component != null and target_weapon_user_component.selected_weapon != null:
 			var weapon = target_weapon_user_component.selected_weapon 
