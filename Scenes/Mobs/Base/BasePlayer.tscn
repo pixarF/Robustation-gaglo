@@ -12,7 +12,9 @@
 [ext_resource type="Material" uid="uid://dctvv4tidab2r" path="res://Resources/Shaders/BattleTendency.tres" id="9_d6ik8"]
 [ext_resource type="Script" uid="uid://c3d63pm2kikgh" path="res://Components/Player/ImpactFrameComponent.gd" id="10_m2dsc"]
 [ext_resource type="Material" uid="uid://dufhgddaeqjd4" path="res://Resources/Shaders/ImpactFrame.tres" id="11_oayod"]
+[ext_resource type="Script" uid="uid://qcmegh7138ug" path="res://Components/Entity/UniqueShaderComponent.gd" id="11_yhquf"]
 [ext_resource type="Script" uid="uid://bdxrxakvokr52" path="res://Components/Player/ScreenShakeComponent.gd" id="13_0r3jo"]
+[ext_resource type="Script" uid="uid://clfjtp26jetey" path="res://Components/Player/RestartComponent.gd" id="14_dytnj"]
 
 [sub_resource type="Shader" id="Shader_oayod"]
 code = "shader_type canvas_item;
@@ -204,6 +206,10 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 
+[node name="UniqueShaderComponent" type="Node" parent="BattleTendencyComponent/CanvasLayer/ColorRect" index="0" unique_id=222333645]
+script = ExtResource("11_yhquf")
+metadata/_custom_type_script = "uid://qcmegh7138ug"
+
 [node name="ImpactFrameComponent" type="Node" parent="." index="19" unique_id=462102113 node_paths=PackedStringArray("effect_frame", "color_modify_frame")]
 script = ExtResource("10_m2dsc")
 effect_frame = NodePath("CanvasLayer/ColorRect")
@@ -222,6 +228,10 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 
+[node name="UniqueShaderComponent" type="Node" parent="ImpactFrameComponent/CanvasLayer/ColorRect" index="0" unique_id=1883787937]
+script = ExtResource("11_yhquf")
+metadata/_custom_type_script = "uid://qcmegh7138ug"
+
 [node name="ColorModify" type="ColorRect" parent="ImpactFrameComponent/CanvasLayer" index="1" unique_id=395695325]
 z_index = 50
 material = SubResource("ShaderMaterial_dytnj")
@@ -232,6 +242,14 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 
+[node name="UniqueShaderComponent" type="Node" parent="ImpactFrameComponent/CanvasLayer/ColorModify" index="0" unique_id=1795704970]
+script = ExtResource("11_yhquf")
+metadata/_custom_type_script = "uid://qcmegh7138ug"
+
 [node name="ScreenShakeComponent" type="Node" parent="." index="20" unique_id=416984762]
 script = ExtResource("13_0r3jo")
 metadata/_custom_type_script = "uid://bdxrxakvokr52"
+
+[node name="RestartComponent" type="Node" parent="." index="21" unique_id=2088749855]
+script = ExtResource("14_dytnj")
+metadata/_custom_type_script = "uid://clfjtp26jetey"

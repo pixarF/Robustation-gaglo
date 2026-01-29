@@ -21,9 +21,9 @@ func _on_wave_timer_timeout() -> void:
 	if wave_cleanbots.is_empty():
 		for bot in randi_range(0, 2):
 			randomize()
-			var x_spawn_pos = player.global_position.x + randf_range(0, 100)
+			var x_spawn_pos = randf_range(0, 500)
 			randomize()
-			var y_spawn_pos = player.global_position.y + randf_range(0, 100)
+			var y_spawn_pos = randf_range(0, 500)
 			
 			var inst = cleanbot.instantiate()
 			inst.global_position = Vector2(x_spawn_pos, y_spawn_pos)
@@ -33,9 +33,9 @@ func _on_wave_timer_timeout() -> void:
 	randomize()
 	if randf() * (diff / 3) > 0.5:
 		randomize()
-		var x_spawn_pos = randf_range(0, 100) + player.global_position.x + randf_range(0, 100)
+		var x_spawn_pos = randf_range(0, 500)
 		randomize()
-		var y_spawn_pos = randf_range(0, 100) + player.global_position.y + randf_range(0, 100)
+		var y_spawn_pos = randf_range(0, 500)
 		
 		var inst = pun_pun.instantiate()
 		inst.global_position = Vector2(x_spawn_pos, y_spawn_pos)
@@ -53,9 +53,9 @@ func _on_wave_timer_timeout() -> void:
 	if wave_assistants.size() <= 20:
 		for enemy in randi_range(1, 3):
 			randomize()
-			var x_spawn_pos = randf_range(0, 100) + player.global_position.x + randf_range(0, 100)
+			var x_spawn_pos = randf_range(0, 500)
 			randomize()
-			var y_spawn_pos = randf_range(0, 100) + player.global_position.y + randf_range(0, 100)
+			var y_spawn_pos = randf_range(0, 500)
 			
 			var inst = assistant.instantiate()
 			inst.global_position = Vector2(x_spawn_pos, y_spawn_pos)
