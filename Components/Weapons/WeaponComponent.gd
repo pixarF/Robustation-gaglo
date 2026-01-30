@@ -47,7 +47,10 @@ func _swing(direction):
 		if animation_component != null and swing_rotation_multiplier != 0:
 			animation_component.lean_to_direction(direction, 2, swing_delay, swing_rotation_multiplier)
 		
-		await get_tree().create_timer(swing_delay).timeout
+		if timers_timescaled == true:
+			await get_tree().create_timer(swing_delay).timeout
+		else:
+			await get_tree().create_timer(swing_delay, true, false, true).timeout
 		
 		swinging = false
 
