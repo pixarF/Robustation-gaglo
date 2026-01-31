@@ -81,8 +81,8 @@ func _walk_animation() -> void:
 	
 	if parent.velocity == Vector2.ZERO and animation_component.animation_priority == 1:
 		animation_component.clear_animation()
-	elif parent.velocity.length_squared() > 0.01 and animation_component.animation_priority < 1:
-		var walk_tween: Tween = create_tween()
+	elif parent.velocity.length() > 0.01 and animation_component.animation_priority < 1:
+		var walk_tween = create_tween()
 		walk_tween.set_loops()
 		walk_tween.set_trans(Tween.TRANS_SINE)
 		walk_tween.set_ease(Tween.EASE_IN_OUT)
@@ -136,7 +136,7 @@ func throw(
 	var actual_speed = min(throw_speed, max_throw_speed)
 	fly_source = throw_source
 	
-	if throw_direction.length_squared() > 0:
+	if throw_direction.length() > 0:
 		fly_direction = throw_direction.normalized()
 	else:
 		fly_direction = Vector2.ZERO
